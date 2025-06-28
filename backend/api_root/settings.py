@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,8 +33,31 @@ ALLOWED_HOSTS = [
     if h.strip()
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Application definition
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "SIGNING_KEY": "sjdasjdnioasnhjdoasdj9wu9hwweqs",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -46,6 +69,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "common",
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +82,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
 ]
+
+AUTH_USER_MODEL = 'common.CustomUser'
+
 
 ROOT_URLCONF = 'api_root.urls'
 

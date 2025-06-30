@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from  common.managers.user_manager import CustomUserManager
-from common.enum import StatusTask
+from common.enum import StatusTask, PriorityTaskEnum
 from common.mixin import TrackableMixin
 
 
@@ -29,6 +29,10 @@ class Task(TrackableMixin):
     status = models.IntegerField(
         choices=StatusTask.choices, default=1
     )
+    priority = models.IntegerField(
+        choices=PriorityTaskEnum.choices, default=1
+    )
+    
 
     def __str__(self):
         return self.title

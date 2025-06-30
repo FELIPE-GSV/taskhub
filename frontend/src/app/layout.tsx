@@ -10,6 +10,8 @@ import { Toaster } from "@/components/ui/sonner"
 import { UserProvider, useUser } from "@/contexts/userContext";
 import API from "@/api/api";
 import { Initializer } from "./initializer";
+import { SideBar } from "@/components/side_bar/sidebar";
+import { TopBar } from "@/components/top_bar/top_bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +40,13 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <UserProvider>
             <Initializer />
-            {children}
+            <main className="flex justify-center items-center">
+              <SideBar />
+              <div className="w-full h-screen flex flex-col justify-start">
+                <TopBar />
+                {children}
+              </div>
+            </main>
           </UserProvider>
           <Toaster position="top-right" />
         </QueryClientProvider>

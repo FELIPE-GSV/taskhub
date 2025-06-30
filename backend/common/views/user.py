@@ -33,5 +33,16 @@ class UserViewSet(viewsets.ModelViewSet):
             tasks.append(task_user.task)
         serializer = TaskSerializer(tasks, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    @action(
+        detail=False,
+        url_path='get-user',
+        url_name='get_user',
+    )
+    def get_user(self, request):
+        user = request.user
+        serializer = RegisterSerializer(user)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
         
         

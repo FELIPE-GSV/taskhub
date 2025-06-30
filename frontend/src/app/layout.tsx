@@ -4,6 +4,12 @@ import "./globals.css";
 import { metadata } from "@/metadata/metadata";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from "@/lib/query_client";
+import { Toaster } from "@/components/ui/sonner"
+import { UserProvider, useUser } from "@/contexts/userContext";
+import API from "@/api/api";
+import { Initializer } from "./initializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,38 +28,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (typeof window !== 'undefined') {
-      if (!token) { router.push('/pages/login'); }
-    }
-
-    const isTokenExpired = () => {
-      const now = new Date().getTime();
-      const tokenTimestamp = localStorage.getItem('tokenTimestamp');
-      const expiresIn = 1800 * 1000;
-
-      if (!tokenTimestamp) {
-        return true;
-      }
-
-      return now - Number(tokenTimestamp) > expiresIn;
-    };
-
-    const checkTokenExpiration = () => {
-      if (isTokenExpired()) {
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('tokenTimestamp');
-        router.push("/pages/login");
-      }
-    };
-
-    checkTokenExpiration();
-
-  }, [router]);
-
   return (
     <html lang="en">
       <title>{metadata.title}</title>
@@ -61,7 +35,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>
+            <Initializer />
+            {children}
+          </UserProvider>
+          <Toaster position="top-right" />
+        </QueryClientProvider>
       </body>
     </html>
   );

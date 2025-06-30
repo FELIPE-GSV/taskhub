@@ -3,6 +3,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
+import { useUserRegister } from "@/services/user/useUserRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
@@ -11,7 +12,7 @@ import { z } from "zod";
 
 
 const signupSchema = z.object({
-    name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
+    nome: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
     email: z.string().email('Email inválido'),
     password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
     confirmPassword: z.string(),
@@ -20,16 +21,19 @@ const signupSchema = z.object({
     path: ["confirmPassword"],
 });
 
-type SignupFormData = z.infer<typeof signupSchema>;
-export function FormRegister() {
+export type SignupFormData = z.infer<typeof signupSchema>;
+type FormRegisterProps = {
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+};
+export function FormRegister({ setIsLogin }: FormRegisterProps) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+    const register = useUserRegister({setIsLogin: setIsLogin});
     const signupForm = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
-            name: '',
+            nome: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -37,8 +41,7 @@ export function FormRegister() {
     });
 
     const onSignupSubmit = (data: SignupFormData) => {
-        console.log('Signup:', data);
-        // Aqui você implementaria a lógica de cadastro
+        register.mutate(data);
     };
 
     return (
@@ -60,11 +63,11 @@ export function FormRegister() {
                                 type="text"
                                 placeholder="Seu nome"
                                 className="pl-10 border-2 focus:border-blue-500 transition-colors text-slate-800 dark:text-slate-100"
-                                {...signupForm.register('name')}
+                                {...signupForm.register('nome')}
                             />
                         </div>
-                        {signupForm.formState.errors.name && (
-                            <p className="text-sm text-destructive">{signupForm.formState.errors.name.message}</p>
+                        {signupForm.formState.errors.nome && (
+                            <p className="text-sm text-destructive">{signupForm.formState.errors.nome.message}</p>
                         )}
                     </div>
 

@@ -19,6 +19,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        tasks = Task.objects.filter(task_user__user=instance).distinct()
+        tasks = (
+            Task.objects
+            .filter(task_user__user=instance)
+            .order_by('-id')[:3]
+        )
         data['tasks'] = TaskSerializer(tasks, many=True).data
         return data        

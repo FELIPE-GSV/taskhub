@@ -1,3 +1,14 @@
+"use client"
+import { useUser } from "@/contexts/userContext";
+
 export default function Dashboard() {
-    return <h1>Dashboard</h1>;
+
+    const { user } = useUser()
+
+    return (
+        <main>
+            dashboard
+            {user?.nome}
+        </main>
+    );
 }

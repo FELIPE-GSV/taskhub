@@ -3,6 +3,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
+import { useAuthentication } from "@/services/user/useAuthentication";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
@@ -14,7 +15,7 @@ const loginSchema = z.object({
     email: z.string().email('Email inválido'),
     password: z.string().min(1, 'Senha deve ter pelo menos 1 caracter'),
 });
-type LoginFormData = z.infer<typeof loginSchema>;
+export type LoginFormData = z.infer<typeof loginSchema>;
 export function FormLogin() {
 
     const [showPassword, setShowPassword] = useState(false);
@@ -25,10 +26,10 @@ export function FormLogin() {
             password: '',
         },
     });
+    const authentication = useAuthentication();
 
     const onLoginSubmit = (data: LoginFormData) => {
-        console.log('Login:', data);
-        // Aqui você implementaria a lógica de login
+        authentication.mutate(data);
     };
 
     return (

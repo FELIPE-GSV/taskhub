@@ -5,7 +5,7 @@ import { useUser } from "@/contexts/userContext";
 import API from "@/api/api";
 
 export function Initializer() {
-  const { setUser } = useUser();
+  const { setUser, setDashboardUser } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,6 +41,23 @@ export function Initializer() {
         router.push("/pages/login");
       }
     };
+    const fetchDashboard = async () => {
+      try {
+        const response = await API.get('/user/dashboard-user/', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (response.data) {
+          setDashboardUser(response.data);
+        }
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err);
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenTimestamp');
+        router.push("/pages/login");
+      }
+    };
 
     if (isTokenExpired()) {
       localStorage.removeItem('token');
@@ -49,6 +66,7 @@ export function Initializer() {
       router.push("/pages/login");
     } else {
       fetchUser();
+      fetchDashboard();
     }
   }, [router, setUser]);
 

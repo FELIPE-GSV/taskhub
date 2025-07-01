@@ -5,13 +5,13 @@ import { metadata } from "@/metadata/metadata";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClient } from "@/lib/query_client";
 import { Toaster } from "@/components/ui/sonner"
 import { UserProvider, useUser } from "@/contexts/userContext";
 import API from "@/api/api";
 import { Initializer } from "./initializer";
 import { SideBar } from "@/components/side_bar/sidebar";
 import { TopBar } from "@/components/top_bar/top_bar";
+import { queryClient } from "@/lib/queryClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

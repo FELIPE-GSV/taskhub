@@ -1,7 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUser } from "@/contexts/userContext";
 import { AlertCircle, CheckCircle2, CheckSquare, Clock } from "lucide-react";
 
 export function CardsDashboard() {
+
+    const { dashboardUser } = useUser()
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800">
@@ -12,7 +16,7 @@ export function CardsDashboard() {
                     <CheckSquare className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{40}</div>
+                    <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{dashboardUser?.total_tasks}</div>
                 </CardContent>
             </Card>
 
@@ -25,7 +29,7 @@ export function CardsDashboard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
-                        20
+                        {dashboardUser?.tasks_done}
                     </div>
                 </CardContent>
             </Card>
@@ -39,7 +43,7 @@ export function CardsDashboard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-                        {5}
+                        {dashboardUser?.tasks_in_progress}
                     </div>
                 </CardContent>
             </Card>
@@ -53,7 +57,7 @@ export function CardsDashboard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-red-900 dark:text-red-100">
-                        {12}
+                        {dashboardUser?.tasks_pending}
                     </div>
                 </CardContent>
             </Card>

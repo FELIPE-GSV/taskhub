@@ -2,52 +2,15 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { CardsDashboard } from "./cards_dashboard/card_dashboards";
-import { AlertCircle, CheckCircle2, Clock, MoreHorizontal, Search, Tag } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock, Search, Tag } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { useUser } from "@/contexts/userContext";
+import { CardListTask } from "./cards_dashboard/card_list_task";
 
 export default function Dashboard() {
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'completed':
-                return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-300';
-            case 'in-progress':
-                return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300';
-            case 'pending':
-                return 'bg-red-100 text-red-700 dark:bg-amber-900/20 dark:text-amber-300';
-            default:
-                return 'bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-300';
-        }
-    };
-
-    const getPriorityColor = (priority: string) => {
-        switch (priority) {
-            case 'high':
-                return 'bg-red-100 text-xl text-red-800 dark:bg-red-900/20 dark:text-red-300';
-            case 'medium':
-                return 'bg-yellow-100 text-xl text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300';
-            case 'low':
-                return 'bg-green-100 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-300';
-            default:
-                return 'bg-slate-100 text-xl text-slate-800 dark:bg-slate-900/20 dark:text-slate-300';
-        }
-    };
-
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'completed':
-                return <CheckCircle2 className="w-6 h-6" />;
-            case 'in-progress':
-                return <Clock className="w-6 h-6" />;
-            case 'pending':
-                return <AlertCircle className="w-6 h-6" />;
-            default:
-                return <Clock className="w-6 h-6" />;
-        }
-    };
+    const { dashboardUser } = useUser()
 
     return (
         <main className="w-full h-screen flex flex-col justify-center items-center px-16 py-4">
@@ -78,35 +41,13 @@ export default function Dashboard() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <div className="flex items-center space-x-4">
-                                <div className={cn(
-                                    "p-2 rounded-lg",
-                                    getStatusColor("completed")
-                                )}>
-                                    {getStatusIcon("completed")}
-                                </div>
-                                <div className="flex-1">
-                                    <h4 className=" text-xl font-medium text-slate-800 dark:text-slate-100">Fazer o L</h4>
-                                    <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">Tem que terminar o projeto mano pprt.</p>
-                                    <div className="flex items-center space-x-4 mt-2">
-                                        <Badge variant={"outline"} className="text-sm">
-                                            Felipe
-                                        </Badge>
-                                        <span className="text-sm text-slate-500 dark:text-slate-400">
-                                            Vence em {new Date().toLocaleDateString('pt-BR')}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Badge variant={"outline"} className={getPriorityColor("low")}>
-                                    Alta
-                                </Badge>
-                                <Button variant="ghost" size="sm">
-                                    <MoreHorizontal className="w-4 h-4" />
-                                </Button>
-                            </div>
+                        <div className="flex flex-col gap-4">
+                            {dashboardUser?.last_tasks.map((task, index) => (
+                                <CardListTask
+                                    key={index}
+                                    task={task}
+                                />
+                            ))}
                         </div>
                     </CardContent>
                     {/* <CardFooter>Card Footer</CardFooter> */}

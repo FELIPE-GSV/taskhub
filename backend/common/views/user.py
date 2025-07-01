@@ -3,6 +3,7 @@ from common.models import (
     CustomUser,
     TaskUser
 )
+from common.services.user_service import UserService
 from common.serializers.user_serializer import RegisterSerializer
 from common.serializers.task_serializer import TaskSerializer
 from rest_framework.decorators import action
@@ -38,11 +39,31 @@ class UserViewSet(viewsets.ModelViewSet):
         detail=False,
         url_path='get-user',
         url_name='get_user',
+        methods=['GET'],
     )
     def get_user(self, request):
         user = request.user
         serializer = RegisterSerializer(user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    @action(
+        detail=False,
+        methods=['GET'],
+        url_path='dashboard-user',
+        url_name='dashboard_user',
+    )
+    def get_dashboard_user(self, request):
+        user = request.user
+        service = UserService(
+            user=user
+        )
+        data = service.return_data_dashboard()
+        return Response(
+            data=data,
+            status=status.HTTP_200_OK
+        )
+        
+    
     
         
         

@@ -13,9 +13,6 @@ export function CardsDashboard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{40}</div>
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
-                        +2 desde ontem
-                    </p>
                 </CardContent>
             </Card>
 
@@ -30,9 +27,6 @@ export function CardsDashboard() {
                     <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
                         20
                     </div>
-                    <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                        +5 esta semana
-                    </p>
                 </CardContent>
             </Card>
 
@@ -47,9 +41,6 @@ export function CardsDashboard() {
                     <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
                         {5}
                     </div>
-                    <p className="text-xs text-amber-700 dark:text-amber-300">
-                        3 vencendo hoje
-                    </p>
                 </CardContent>
             </Card>
 
@@ -64,9 +55,6 @@ export function CardsDashboard() {
                     <div className="text-2xl font-bold text-red-900 dark:text-red-100">
                         {12}
                     </div>
-                    <p className="text-xs text-red-700 dark:text-red-300">
-                        Requer atenção
-                    </p>
                 </CardContent>
             </Card>
         </div>

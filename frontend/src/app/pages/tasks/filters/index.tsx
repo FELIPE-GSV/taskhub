@@ -8,7 +8,6 @@ import { Search } from "lucide-react"
 
 export function FiltersTasks() {
 
-
     const {
         filterPriorityTask,
         filterStatusTask,
@@ -20,9 +19,6 @@ export function FiltersTasks() {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className="text-lg text-slate-800 dark:text-slate-100">Filtros</CardTitle>
-            </CardHeader>
             <CardContent>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-1">

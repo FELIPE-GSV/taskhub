@@ -35,6 +35,7 @@ export default function Dashboard() {
                                     <CardListTask
                                         key={index}
                                         task={task}
+                                        isDashboard
                                     />
                                 ))}
                             </div>

@@ -8,8 +8,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 
 interface CardListTaskProps {
     task: Task
+    isDashboard?: boolean
 }
-export function CardListTask({ task }: CardListTaskProps) {
+export function CardListTask({ task, isDashboard }: CardListTaskProps) {
     return (
         <div className="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
             <div className="flex items-center space-x-4">
@@ -32,36 +33,39 @@ export function CardListTask({ task }: CardListTaskProps) {
                     </div>
                 </div>
             </div>
+
             <div className="flex items-center space-x-2">
                 <Badge variant={"outline"} className={getPriorityColor(task.priority.id)}>
                     {task.priority.label}
                 </Badge>
-                <div className="flex items-center space-x-2 ml-4">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Eye className="mr-2 h-4 w-4" />
-                                Visualizar
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Editar
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600 dark:text-red-400">
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Excluir
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {!isDashboard && (
+                    <div className="flex items-center space-x-2 ml-4">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <MoreHorizontal className="w-4 h-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    Visualizar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Edit className="mr-2 h-4 w-4" />
+                                    Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-red-600 dark:text-red-400">
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Excluir
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                )}
             </div>
         </div>
     )

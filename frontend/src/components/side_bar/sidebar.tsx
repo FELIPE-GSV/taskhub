@@ -1,5 +1,5 @@
 "use client"
-import { CheckSquare, Home, Menu, Users } from "lucide-react";
+import { CheckSquare, Home, Menu, SquareCheckBig, Users } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ export function SideBar() {
 
     const sidebarItems = [
         { icon: Home, label: 'Dashboard', active: pathname === "/pages/dashboard", pathname: "/pages/dashboard" },
+        { icon: SquareCheckBig, label: 'Tasks', active: pathname === "/pages/tasks", pathname: "/pages/tasks" },
         { icon: Users, label: 'Groups', active: pathname === "/pages/groups", pathname: "/pages/groups" },
     ];
 

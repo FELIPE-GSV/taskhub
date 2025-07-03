@@ -1,11 +1,9 @@
 from rest_framework import viewsets, permissions
 from common.models import (
     CustomUser,
-    TaskUser
 )
 from common.services.user_service import UserService
 from common.serializers.user_serializer import RegisterSerializer
-from common.serializers.task_serializer import TaskSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,21 +17,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
     
-    @action(
-        detail=True,
-        methods=['GET'],
-        url_path='user-tasks',
-        url_name='user_tasks',
-        permission_classes=[permissions.IsAuthenticated()]
-    )
-    def user_tasks(self, request, pk=None):
-        user = self.get_object()
-        tasks = []
-        tasks_users_instances = TaskUser.objects.filter(user=user)
-        for task_user in tasks_users_instances:
-            tasks.append(task_user.task)
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
     
     @action(
         detail=False,

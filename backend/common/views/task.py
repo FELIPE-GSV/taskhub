@@ -6,11 +6,12 @@ from common.models import (
 from common.serializers.task_serializer import TaskSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 
 from rest_framework.decorators import action
 
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
+    queryset = Task.objects.order_by("-id").all()
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -24,5 +25,29 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(
+        detail=False,
+        methods=['GET'],
+        url_path='user-tasks',
+        url_name='user_tasks',
+    )
+    def user_tasks(self, request, pk=None):
+        user = request.user
+
+        title = request.query_params.get('title')
+        status_param = request.query_params.get('status')
+        priority_param = request.query_params.get('priority')
+        task_users_qs = TaskUser.objects.filter(user=user).select_related("task")
+        tasks = Task.objects.filter(id__in=task_users_qs.values_list("task_id", flat=True))
+        if title:
+            tasks = tasks.filter(title__icontains=title)
+        if status_param:
+            tasks = tasks.filter(status=status_param)
+        if priority_param:
+            tasks = tasks.filter(priority=priority_param)
+
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
         
         

@@ -16,6 +16,7 @@ export function TopBar() {
     const titles: { [key: string]: string } = {
         "/pages/dashboard": "Dashboard",
         "/pages/groups": "Groups",
+        "/pages/tasks": "Tasks",
     };
 
     const getTitle = () => {

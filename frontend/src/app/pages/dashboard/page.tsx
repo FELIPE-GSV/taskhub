@@ -2,21 +2,27 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { CardsDashboard } from "./cards_dashboard/card_dashboards";
-import { Activity, AlertCircle, CheckCircle2, Clock, Search, Tag, Target, TrendingUp } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Activity, Target, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/userContext";
 import { CardListTask } from "../../../components/card_list_task/card_list_task";
 import { useRouter } from "next/navigation";
+import { useListDashboard } from "@/services/user/useListDashboard";
+import { useEffect } from "react";
 
 export default function Dashboard() {
 
-    const { dashboardUser } = useUser()
     const router = useRouter()
+    const { data: dashboardUser } = useListDashboard()
+    const { setDashboardUser } = useUser()
+
+    useEffect(() => {
+        setDashboardUser(dashboardUser)
+    }, [setDashboardUser, dashboardUser])
 
     return (
-        <main className="w-full h-screen flex flex-col justify-center items-center px-16 py-4">
-            <div className="w-[85%] lg:w-full h-full flex flex-col justify-start">
+        <main className="w-full h-screen flex flex-col justify-center items-center py-4">
+            <div className="w-full px-[15%] lg:w-full h-full flex flex-col justify-start">
                 <CardsDashboard />
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <Card className="lg:col-span-2">

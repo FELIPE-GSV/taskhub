@@ -46,8 +46,17 @@ class TaskViewSet(viewsets.ModelViewSet):
             tasks = tasks.filter(status=status_param)
         if priority_param:
             tasks = tasks.filter(priority=priority_param)
+            
+        data_return = tasks.order_by('-id')
 
-        serializer = TaskSerializer(tasks, many=True)
+        serializer = TaskSerializer(data_return, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        task_remote_to_delete = TaskUser.objects.filter(task=instance).first()
+        task_remote_to_delete.delete()
+        instance.delete()
+        return Response(data={"message": "Tarefa excluida com sucesso!"},status=status.HTTP_200_OK)
         
         

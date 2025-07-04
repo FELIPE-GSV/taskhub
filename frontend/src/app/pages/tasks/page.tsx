@@ -10,7 +10,7 @@ import { FormTask } from "./form_task/form_task";
 
 export default function Tasks() {
     return (
-        <main className="w-full h-screen flex flex-col justify-start items-start px-[20%] py-4">
+        <main className="w-full h-screen flex flex-col justify-start items-start px-[15%] py-4">
             <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="w-full">
                     <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">

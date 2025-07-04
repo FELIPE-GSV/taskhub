@@ -11,7 +11,7 @@ export function useAuthentication() {
     const router = useRouter()
     const now = new Date().getTime();
 
-    const { setUser, setDashboardUser } = useUser()
+    const { setUser } = useUser()
 
 
     return useMutation({
@@ -34,14 +34,6 @@ export function useAuthentication() {
                 router.push('/pages/dashboard')
             }
 
-            const responseDashboard = await API.get('/user/dashboard-user/', {
-                headers: {
-                    Authorization: `Bearer ${data.access}`
-                }
-            });
-            if (responseDashboard.data) {
-                setDashboardUser(responseDashboard.data);
-            }
         },
         onError: (error: any) => {
             ToastService(TypeToast.WARNING, error?.response?.data?.detail)

@@ -53,7 +53,7 @@ export function TaskComponent() {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {tasks?.slice().reverse().map((task, index) => (
+                        {tasks?.map((task, index) => (
                             <CardListTask
                                 key={index}
                                 task={task}

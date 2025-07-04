@@ -93,7 +93,6 @@ export function FormTask() {
 
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <div className="grid gap-6">
-                        {/* Título */}
                         <div className="space-y-2">
                             <Label htmlFor="title" className="text-slate-700 dark:text-slate-200 font-medium flex items-center">
                                 <FileText className="w-4 h-4 mr-2 text-slate-500" />

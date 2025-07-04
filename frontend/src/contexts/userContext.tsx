@@ -33,8 +33,8 @@ export type DashboardUser = {
 type UserContextType = {
     user: User | null
     setUser: (user: User | null) => void,
-    dashboardUser: DashboardUser | null,
-    setDashboardUser: (dashboardUser: DashboardUser | null) => void
+    dashboardUser: DashboardUser | null | undefined,
+    setDashboardUser: (dashboardUser: DashboardUser | null | undefined) => void
     filterTitleTask: string
     setFilterTitleTask: (filterTitleTask: string) => void
     filterStatusTask: string
@@ -47,7 +47,7 @@ export const UserContext = createContext<UserContextType>({} as UserContextType)
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null)
-    const [dashboardUser, setDashboardUser] = useState<DashboardUser | null>(null)
+    const [dashboardUser, setDashboardUser] = useState<DashboardUser | null | undefined>(null)
     const [filterTitleTask, setFilterTitleTask] = useState<string>("")
     const [filterStatusTask, setFilterStatusTask] = useState<string>("")
     const [filterPriorityTask, setFilterPriorityTask] = useState<string>("")

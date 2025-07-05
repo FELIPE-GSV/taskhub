@@ -55,7 +55,6 @@ export default function Dashboard() {
                                 </Button>
                             </div>
                         </CardContent>
-                        {/* <CardFooter>Card Footer</CardFooter> */}
                     </Card>
                     <Card>
                         <CardHeader>

@@ -16,6 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { useCreateTask } from '@/services/task/useCreateTask';
+import { useFormTask } from './use_form_task';
 
 const taskSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório').max(100, 'Título deve ter no máximo 100 caracteres'),
@@ -33,20 +34,13 @@ const taskSchema = z.object({
 
 export type TaskFormData = z.infer<typeof taskSchema>;
 
-const statusOptions = [
-    { value: '1', label: 'Pendente', color: 'text-amber-600' },
-    { value: '2', label: 'Em Andamento', color: 'text-blue-600' },
-    { value: '3', label: 'Concluída', color: 'text-emerald-600' },
-];
-
-const priorityOptions = [
-    { value: '1', label: 'Baixa', color: 'text-green-600' },
-    { value: '2', label: 'Média', color: 'text-yellow-600' },
-    { value: '3', label: 'Alta', color: 'text-red-600' },
-];
-
 export function FormTask() {
-    const [open, setOpen] = useState(false);
+    const {
+        open,
+        priorityOptions,
+        setOpen,
+        statusOptions
+    } = useFormTask()
     const { mutate: createTask, isPending } = useCreateTask({closeModalCreateTask: setOpen})
 
     const form = useForm<TaskFormData>({

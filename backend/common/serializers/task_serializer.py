@@ -14,7 +14,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         task_user = TaskUser.objects.filter(task=instance).first()
-        data['responsible'] = task_user.user.nome
+        data['responsible'] = f'{task_user.user.first_name} {task_user.user.last_name}'
         
         if instance.priority == 1:
             data['priority'] = {

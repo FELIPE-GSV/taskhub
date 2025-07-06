@@ -1,8 +1,7 @@
-import { Badge, Bell, LogOut, Search, Settings, User } from "lucide-react";
-import { Input } from "../ui/input";
+import { Bell, LogOut, User } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useUser } from "@/contexts/userContext";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -15,8 +14,9 @@ export function TopBar() {
 
     const titles: { [key: string]: string } = {
         "/pages/dashboard": "Dashboard",
-        "/pages/groups": "Groups",
-        "/pages/tasks": "Tasks",
+        "/pages/groups": "Grupos",
+        "/pages/tasks": "Tarefas",
+        "/pages/profile": "Perfil",
     };
 
     const getTitle = () => {
@@ -36,8 +36,6 @@ export function TopBar() {
                 </div>
 
                 <div className="flex items-center space-x-4">
-
-                    {/* Notifications */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="relative">
@@ -79,29 +77,30 @@ export function TopBar() {
                             ))} */}
                         </DropdownMenuContent>
                     </DropdownMenu>
-
-                    {/* User Menu */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                                 <Avatar className="h-10 w-10">
-                                    {/* <AvatarImage src="/placeholder-avatar.jpg" alt="Avatar" /> */}
-                                    <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
-                                        {user?.nome?.substring(0, 1)?.toLocaleUpperCase()}
+                                    <AvatarImage
+                                        src={user?.profile_picture as any}
+                                        alt={user?.first_name}
+                                        className="object-cover"
+                                    />
+                                    <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 gap-2">
+                                        {user?.first_name?.substring(0, 1)?.toLocaleUpperCase()}
+                                        {user?.last_name?.substring(0, 1)?.toLocaleUpperCase()}
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>{user?.nome}</DropdownMenuLabel>
+                            <DropdownMenuLabel>{user?.first_name}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => router.push("/pages/profile")}
+                            >
                                 <User className="mr-2 h-4 w-4" />
                                 Perfil
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Settings className="mr-2 h-4 w-4" />
-                                Configurações
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600 dark:text-red-400" onClick={() => signOut()}>

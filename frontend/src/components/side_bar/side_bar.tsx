@@ -13,8 +13,8 @@ export function SideBar() {
 
     const sidebarItems = [
         { icon: Home, label: 'Dashboard', active: pathname === "/pages/dashboard", pathname: "/pages/dashboard" },
-        { icon: SquareCheckBig, label: 'Tasks', active: pathname === "/pages/tasks", pathname: "/pages/tasks" },
-        { icon: Users, label: 'Groups', active: pathname === "/pages/groups", pathname: "/pages/groups" },
+        { icon: SquareCheckBig, label: 'Tarefas', active: pathname === "/pages/tasks", pathname: "/pages/tasks" },
+        { icon: Users, label: 'Grupos', active: pathname === "/pages/groups", pathname: "/pages/groups" },
     ];
 
     return (

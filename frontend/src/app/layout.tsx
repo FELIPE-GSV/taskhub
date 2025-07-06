@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { UserProvider, useUser } from "@/contexts/userContext";
 import API from "@/api/api";
 import { Initializer } from "./initializer";
-import { SideBar } from "@/components/side_bar/sidebar";
+import { SideBar } from "@/components/side_bar/side_bar";
 import { TopBar } from "@/components/top_bar/top_bar";
 import { queryClient } from "@/lib/queryClient";
 
@@ -29,6 +29,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const router = useRouter();
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/pages/login');
+      return;
+    }
+
+    const isTokenExpired = () => {
+      const now = new Date().getTime();
+      const tokenTimestamp = localStorage.getItem('tokenTimestamp');
+      const expiresIn = 1800 * 1000;
+      if (!tokenTimestamp) return true;
+      return now - Number(tokenTimestamp) > expiresIn;
+    };
+
+    if (isTokenExpired()) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenTimestamp');
+      setUser(null)
+      router.push("/pages/login");
+    } else {
+    }
+  }, [router, setUser]);
+
 
   return (
     <html lang="en">

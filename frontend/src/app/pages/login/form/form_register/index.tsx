@@ -12,10 +12,11 @@ import { z } from "zod";
 
 
 const signupSchema = z.object({
-    nome: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
     email: z.string().email('Email inválido'),
     password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
     confirmPassword: z.string(),
+    first_name: z.string().min(1, 'Este campo é obrigatório.').max(50, 'Tamanho máximo de 50 caracteres'),
+    last_name: z.string().min(1, 'Este campo é obrigatório.').max(50, 'Tamanho.maxcdn de 50 caracteres'),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Senhas não coincidem",
     path: ["confirmPassword"],
@@ -33,10 +34,11 @@ export function FormRegister({ setIsLogin }: FormRegisterProps) {
     const signupForm = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
-            nome: '',
             email: '',
             password: '',
             confirmPassword: '',
+            first_name: '',
+            last_name: '',
         },
     });
 
@@ -55,19 +57,35 @@ export function FormRegister({ setIsLogin }: FormRegisterProps) {
             <form onSubmit={signupForm.handleSubmit(onSignupSubmit)}>
                 <CardContent className="space-y-4 mb-6">
                     <div className="space-y-2">
-                        <Label htmlFor="signup-name" className="text-slate-700 dark:text-slate-200 font-medium">Nome completo</Label>
+                        <Label htmlFor="signup-name" className="text-slate-700 dark:text-slate-200 font-medium">Primeiro nome</Label>
                         <div className="relative">
                             <User className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
                             <Input
-                                id="signup-name"
+                                id="signup-first-name"
                                 type="text"
-                                placeholder="Seu nome"
+                                placeholder="Seu primeiro nome"
                                 className="pl-10 border-2 focus:border-blue-500 transition-colors text-slate-800 dark:text-slate-100"
-                                {...signupForm.register('nome')}
+                                {...signupForm.register('first_name')}
                             />
                         </div>
-                        {signupForm.formState.errors.nome && (
-                            <p className="text-sm text-destructive">{signupForm.formState.errors.nome.message}</p>
+                        {signupForm.formState.errors.first_name && (
+                            <p className="text-sm text-destructive">{signupForm.formState.errors.first_name.message}</p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="signup-name" className="text-slate-700 dark:text-slate-200 font-medium">Último nome</Label>
+                        <div className="relative">
+                            <User className="absolute left-3 top-3 h-4 w-4 text-slate-500 dark:text-slate-400" />
+                            <Input
+                                id="signup-last-name"
+                                type="text"
+                                placeholder="Seu último nome"
+                                className="pl-10 border-2 focus:border-blue-500 transition-colors text-slate-800 dark:text-slate-100"
+                                {...signupForm.register('last_name')}
+                            />
+                        </div>
+                        {signupForm.formState.errors.last_name && (
+                            <p className="text-sm text-destructive">{signupForm.formState.errors.last_name.message}</p>
                         )}
                     </div>
 

@@ -15,9 +15,13 @@ export type Task = {
     responsible: string
 }
 export type User = {
-    id: number
-    email: string
-    nome: string
+  id: number
+  email: string
+  first_name: string
+  last_name: string
+  profile_picture: string | null
+  bio: string | null
+  phone: string | null
 }
 
 export type DashboardUser = {

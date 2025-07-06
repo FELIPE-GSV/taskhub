@@ -17,7 +17,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
     
-    
     @action(
         detail=False,
         url_path='get-user',
@@ -46,6 +45,14 @@ class UserViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
         
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(
+            user, data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
     
     
         

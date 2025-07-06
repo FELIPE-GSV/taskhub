@@ -5,7 +5,7 @@ import { useUser } from "@/contexts/userContext";
 import API from "@/api/api";
 
 export function Initializer() {
-  const { setUser, setDashboardUser } = useUser();
+  const { setUser, setDashboardUser, setNotifications } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +23,25 @@ export function Initializer() {
       if (!tokenTimestamp) return true;
       return now - Number(tokenTimestamp) > expiresIn;
     };
+
+    const fetchNotifications = async () => {
+      try {
+        const { data } = await API.get('/notification/', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+        })
+        if (data) {
+          setNotifications(data)
+        }
+        return data
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenTimestamp');
+        router.push("/pages/login");
+      }
+    }
 
     const fetchUser = async () => {
       try {
@@ -67,6 +86,7 @@ export function Initializer() {
     } else {
       fetchUser();
       fetchDashboard();
+      fetchNotifications();
     }
   }, [router, setUser]);
 

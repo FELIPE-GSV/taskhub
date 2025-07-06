@@ -68,7 +68,7 @@ export function FormTask({ isEdit, task }: FormTaskProps) {
         if (isEdit) {
             updateTask(data)
         } else {
-            createTask(data);
+            createTask(data)
         }
         form.reset()
     };

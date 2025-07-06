@@ -1,7 +1,6 @@
 import API from "@/api/api"
 import { TaskFormData } from "@/app/pages/tasks/form_task/form_task"
 import { ToastService, TypeToast } from "@/components/toast_service/toast_service"
-import { Task } from "@/contexts/userContext"
 import { queryClient } from "@/lib/queryClient"
 import { useMutation } from "@tanstack/react-query"
 import { Dispatch, SetStateAction } from "react"
@@ -24,8 +23,8 @@ export const useUpdateTask = ({ id, closeModalCreateTask }: UpdateTaskProps) => 
         },
         onSuccess: (data) => {
             if (data) {
-                queryClient.invalidateQueries({ queryKey: ['tasks']})
-                queryClient.invalidateQueries({ queryKey: ['dashboard']})
+                queryClient.refetchQueries({ queryKey: ['tasks']})
+                queryClient.refetchQueries({ queryKey: ['dashboard']})
                 ToastService(TypeToast.SUCCESS, "Tarefa atualizada com sucesso!")
                 closeModalCreateTask(false)
             }

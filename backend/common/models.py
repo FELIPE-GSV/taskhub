@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from  common.managers.user_manager import CustomUserManager
-from common.enum import StatusTask, PriorityTaskEnum
+from common.enum import StatusTask, PriorityTaskEnum, NotificationTypeEnum
 from common.mixin import TrackableMixin
 
 
@@ -52,3 +52,25 @@ class TaskUser(TrackableMixin):
         on_delete=models.CASCADE,
         related_name="task_user"
     )
+    
+    
+class Notification(TrackableMixin):
+    receiver = models.ForeignKey(
+        "CustomUser",
+        on_delete=models.CASCADE,
+        related_name="user_notification"
+    )
+    sender = models.ForeignKey(
+        "CustomUser",
+        on_delete=models.CASCADE,
+        related_name="sender_notification",
+        null=True,
+        blank=True
+    )
+    message = models.TextField()
+    title = models.CharField(max_length=100)
+    type = models.IntegerField(
+        choices=NotificationTypeEnum.choices,
+        default=1
+    )
+    read = models.BooleanField(default=False)

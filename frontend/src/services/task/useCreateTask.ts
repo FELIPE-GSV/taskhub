@@ -27,7 +27,8 @@ export const useCreateTask = ({ closeModalCreateTask }: UseCreateTaskProps) => {
             if (data) {
                 closeModalCreateTask(false)
                 ToastService(TypeToast.SUCCESS, "Tarefa criada com sucesso!")
-                queryClient.invalidateQueries({ queryKey: ['tasks'] })
+                queryClient.refetchQueries({ queryKey: ['tasks'] })
+                queryClient.refetchQueries({ queryKey: ['notifications'] })
             }
         },
         onError: (error: any) => {

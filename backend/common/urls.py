@@ -9,10 +9,12 @@ from rest_framework_simplejwt.views import (
 
 from common.views.user import UserViewSet
 from common.views.task import TaskViewSet
+from common.views.notification import NotificationViewSet
 
 router = DefaultRouter()
 router.register(r"user", UserViewSet, basename="user")
 router.register(r"task", TaskViewSet, basename="task")
+router.register(r"notification", NotificationViewSet, basename="notification")
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),

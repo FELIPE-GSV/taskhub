@@ -9,3 +9,8 @@ class PriorityTaskEnum(models.IntegerChoices):
     LOW = 1, ("Baixa")
     MEDIUM = 2, ("Média")
     HIGH = 3, ("Alta")
+    
+class NotificationTypeEnum(models.IntegerChoices):
+    REMINDER = 1, ("Lembrete")
+    GROUP_INVITE = 2, ("Convite para grupo")
+    GROUP_EVENT = 3, ("Evento no grupo")

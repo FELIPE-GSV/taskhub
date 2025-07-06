@@ -4,13 +4,27 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useUser } from "@/contexts/userContext";
 import { usePathname, useRouter } from "next/navigation";
+import { useListNotification } from "@/services/notifications/useListNotification";
+import { Badge } from "../ui/badge";
+import { cn } from "@/lib/utils";
+import { useReadNotification } from "@/services/notifications/useReadNotification";
+import { useEffect } from "react";
 
 
 export function TopBar() {
 
-    const { user } = useUser()
+    const { user, notifications, setNotifications } = useUser()
     const router = useRouter()
     const pathname = usePathname()
+    const { mutate: markNotificationAsRead } = useReadNotification()
+    const { data } = useListNotification()
+    const unreadNotifications = notifications?.filter((notification) => !notification.read).length
+
+    useEffect(() => {
+        if (data) {
+            setNotifications(data)
+        }
+    }, [data, setNotifications])
 
     const titles: { [key: string]: string } = {
         "/pages/dashboard": "Dashboard",
@@ -41,21 +55,22 @@ export function TopBar() {
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="relative">
                                 <Bell className="w-5 h-5 text-slate-600 dark:text-slate-300" />
-                                {/* {unreadNotifications > 0 && (
+                                {unreadNotifications && unreadNotifications > 0 && (
                                     <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-red-500 text-white text-xs">
                                         {unreadNotifications}
                                     </Badge>
-                                )} */}
+                                )}
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-80">
                             <DropdownMenuLabel>Notificações</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            {/* {notifications.map((notification) => (
+                            {notifications && notifications?.map((notification) => (
                                 <DropdownMenuItem
                                     key={notification.id}
                                     className="flex flex-col items-start p-4 cursor-pointer"
-                                    onClick={() => markNotificationAsRead(notification.id)}
+                                    onClick={() => markNotificationAsRead({ id: notification.id })}
+                                    onSelect={(e) => e.preventDefault()}
                                 >
                                     <div className="flex items-start justify-between w-full">
                                         <div className="flex-1">
@@ -68,14 +83,14 @@ export function TopBar() {
                                             <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                                                 {notification.message}
                                             </p>
-                                            <p className="text-xs text-slate-400 mt-2">{notification.time}</p>
+                                            <p className="text-xs text-slate-400 mt-2">{notification.time_since_created}</p>
                                         </div>
                                         {!notification.read && (
                                             <div className="w-2 h-2 bg-blue-500 rounded-full ml-2 mt-1"></div>
                                         )}
                                     </div>
                                 </DropdownMenuItem>
-                            ))} */}
+                            ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <DropdownMenu>

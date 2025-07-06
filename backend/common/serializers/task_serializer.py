@@ -10,7 +10,7 @@ class TaskSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'expiration_date','status']
+        fields = ['id', 'title', 'description', 'expiration_date','status', 'priority']
         
     def to_representation(self, instance):
         data = super().to_representation(instance)

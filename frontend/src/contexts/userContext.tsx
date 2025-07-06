@@ -1,5 +1,5 @@
-// context/UserContext.tsx
 'use client'
+import { Notification } from '@/services/notifications/useListNotification'
 import React, { createContext, useContext, useState } from 'react'
 
 export type Task = {
@@ -58,6 +58,8 @@ type UserContextType = {
     setFilterStatusTask: (filterStatusTask: string) => void
     filterPriorityTask: string
     setFilterPriorityTask: (filterPriorityTask: string) => void
+    notifications: Notification[]
+    setNotifications: (notifications: Notification[]) => void
 }
 
 export const UserContext = createContext<UserContextType>({} as UserContextType)
@@ -68,6 +70,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [filterTitleTask, setFilterTitleTask] = useState<string>("")
     const [filterStatusTask, setFilterStatusTask] = useState<string>("")
     const [filterPriorityTask, setFilterPriorityTask] = useState<string>("")
+    const [notifications, setNotifications] = useState<Notification[]>([])
 
     return (
         <UserContext.Provider value={{
@@ -80,7 +83,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             filterTitleTask,
             setFilterTitleTask,
             user,
-            setUser
+            setUser,
+            notifications,
+            setNotifications
         }}>
             {children}
         </UserContext.Provider>

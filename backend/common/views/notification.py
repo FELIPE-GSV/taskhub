@@ -37,7 +37,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
         ).exclude(task__status=3)
         for task_user in tasks_today:
             task_title = task_user.task.title
-            message = f"A tarefa {task_title} está vencendo hoje."
+            message = f"A tarefa '{task_title}' está vencendo hoje."
             if not Notification.objects.filter(receiver=user, message=message).exists():
                 Notification.objects.create(
                     receiver=user,

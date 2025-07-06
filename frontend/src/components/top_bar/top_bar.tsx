@@ -62,7 +62,7 @@ export function TopBar() {
                                 )}
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-80">
+                        <DropdownMenuContent align="end" className="w-80 max-h-96 overflow-y-auto">
                             <DropdownMenuLabel>Notificações</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             {notifications && notifications?.map((notification) => (

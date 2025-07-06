@@ -15,6 +15,10 @@ export default function Dashboard() {
     const router = useRouter()
     const { data: dashboardUser } = useListDashboard()
     const { setDashboardUser } = useUser()
+    const progress =
+        dashboardUser && dashboardUser.total_tasks > 0
+            ? (dashboardUser.tasks_done / dashboardUser.total_tasks) * 100
+            : 0;
 
     useEffect(() => {
         setDashboardUser(dashboardUser)
@@ -71,14 +75,14 @@ export default function Dashboard() {
                                 <div className="flex justify-between text-sm">
                                     <span className="text-slate-600 dark:text-slate-300">Tarefas Concluídas</span>
                                     <span className="font-medium text-slate-800 dark:text-slate-100">
-                                        {/* {tasks.filter(t => t.status === 'completed').length}/{tasks.length} */}
+                                        {dashboardUser?.tasks_done}/{dashboardUser?.total_tasks}
                                     </span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                                     <div
                                         className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
                                         style={{
-                                            // width: `${(tasks.filter(t => t.status === 'completed').length / tasks.length) * 100}%`
+                                            width: `${progress}%`
                                         }}
                                     ></div>
                                 </div>
@@ -87,31 +91,11 @@ export default function Dashboard() {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-slate-600 dark:text-slate-300">Produtividade</span>
-                                    <span className="font-medium text-slate-800 dark:text-slate-100">85%</span>
+                                    <span className="font-medium text-slate-800 dark:text-slate-100">{dashboardUser?.weekly_progress}%</span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-                                    <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{ width: '85%' }}></div>
+                                    <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{ width: `${dashboardUser?.weekly_progress}%` }}></div>
                                 </div>
-                            </div>
-
-                            <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm text-slate-600 dark:text-slate-300">Meta semanal</span>
-                                    <div className="flex items-center text-emerald-600 dark:text-emerald-400">
-                                        <TrendingUp className="w-4 h-4 mr-1" />
-                                        <span className="text-sm font-medium">+12%</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => router.push('/pages/goals')}
-                                    className="w-full text-blue-600 border-blue-200 hover:bg-blue-50 dark:text-blue-400 dark:border-blue-800 dark:hover:bg-blue-900/20 cursor-pointer"
-                                >
-                                    Ver todas as metas
-                                </Button>
                             </div>
                         </CardContent>
                     </Card>

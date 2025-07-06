@@ -15,13 +15,13 @@ export type Task = {
     responsible: string
 }
 export type User = {
-  id: number
-  email: string
-  first_name: string
-  last_name: string
-  profile_picture: string | null
-  bio: string | null
-  phone: string | null
+    id: number
+    email: string
+    first_name: string
+    last_name: string
+    profile_picture: string | null
+    bio: string | null
+    phone: string | null
 }
 
 export type DashboardUser = {
@@ -29,7 +29,8 @@ export type DashboardUser = {
     tasks_done: number,
     tasks_in_progress: number,
     tasks_pending: number,
-    last_tasks: Task[]
+    last_tasks: Task[],
+    weekly_progress: number
 }
 
 
@@ -57,7 +58,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [filterPriorityTask, setFilterPriorityTask] = useState<string>("")
 
     return (
-        <UserContext.Provider value={{ 
+        <UserContext.Provider value={{
             dashboardUser,
             setDashboardUser,
             filterPriorityTask,
@@ -68,7 +69,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             setFilterTitleTask,
             user,
             setUser
-         }}>
+        }}>
             {children}
         </UserContext.Provider>
     )

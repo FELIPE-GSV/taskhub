@@ -25,10 +25,22 @@ export type User = {
 }
 
 export type DashboardUser = {
-    total_tasks: number,
-    tasks_done: number,
-    tasks_in_progress: number,
-    tasks_pending: number,
+    total_tasks: {
+        message: string,
+        tasks: number
+    },
+    tasks_done: {
+        message: string,
+        tasks: number
+    },
+    tasks_in_progress: {
+        message: string,
+        tasks: number
+    },
+    tasks_pending: {
+        message: string,
+        tasks: number
+    },
     last_tasks: Task[],
     weekly_progress: number
 }

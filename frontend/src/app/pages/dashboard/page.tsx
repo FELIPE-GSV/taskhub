@@ -16,8 +16,8 @@ export default function Dashboard() {
     const { data: dashboardUser } = useListDashboard()
     const { setDashboardUser } = useUser()
     const progress =
-        dashboardUser && dashboardUser.total_tasks > 0
-            ? (dashboardUser.tasks_done / dashboardUser.total_tasks) * 100
+        dashboardUser && dashboardUser.total_tasks.tasks > 0
+            ? (dashboardUser.tasks_done.tasks / dashboardUser.total_tasks.tasks) * 100
             : 0;
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export default function Dashboard() {
                                 <div className="flex justify-between text-sm">
                                     <span className="text-slate-600 dark:text-slate-300">Tarefas Concluídas</span>
                                     <span className="font-medium text-slate-800 dark:text-slate-100">
-                                        {dashboardUser?.tasks_done}/{dashboardUser?.total_tasks}
+                                        {dashboardUser?.tasks_done?.tasks}/{dashboardUser?.total_tasks?.tasks}
                                     </span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">

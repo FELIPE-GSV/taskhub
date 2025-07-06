@@ -16,11 +16,11 @@ export function CardsDashboard() {
                     <CheckSquare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center justify-center">
-                        <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{dashboardUser?.total_tasks}</div>
-                        {/* <p className="text-xs text-blue-700 dark:text-blue-300">
-                        +2 desde ontem
-                        </p> */}
+                    <div className="flex flex-col items-center justify-center gap-3">
+                        <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{dashboardUser?.total_tasks?.tasks}</div>
+                        <p className="text-xs text-blue-700 dark:text-blue-300">
+                            {dashboardUser?.total_tasks?.message}
+                        </p>
                     </div>
                 </CardContent>
             </Card>
@@ -33,13 +33,13 @@ export function CardsDashboard() {
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-3">
                         <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
-                            {dashboardUser?.tasks_done}
+                            {dashboardUser?.tasks_done?.tasks}
                         </div>
-                        {/* <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                        +5 esta semana
-                        </p> */}
+                        <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                            {dashboardUser?.tasks_done?.message}
+                        </p>
                     </div>
                 </CardContent>
             </Card>
@@ -52,13 +52,13 @@ export function CardsDashboard() {
                     <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-3">
                         <div className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-                            {dashboardUser?.tasks_in_progress}
+                            {dashboardUser?.tasks_in_progress?.tasks}
                         </div>
-                        {/* <p className="text-xs text-amber-700 dark:text-amber-300">
-                        3 vencendo hoje
-                        </p> */}
+                        <p className="text-xs text-amber-700 dark:text-amber-300">
+                            {dashboardUser?.tasks_in_progress?.message}
+                        </p>
                     </div>
                 </CardContent>
             </Card>
@@ -71,13 +71,13 @@ export function CardsDashboard() {
                     <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-3">
                         <div className="text-2xl font-bold text-red-900 dark:text-red-100">
-                            {dashboardUser?.tasks_pending}
+                            {dashboardUser?.tasks_pending?.tasks}
                         </div>
-                        {/* <p className="text-xs text-red-700 dark:text-red-300">
-                        Requer atenção
-                        </p> */}
+                        <p className="text-xs text-red-700 dark:text-red-300">
+                            {dashboardUser?.tasks_pending?.message}
+                        </p>
                     </div>
                 </CardContent>
             </Card>

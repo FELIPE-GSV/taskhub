@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { CalendarIcon, Clock, AlertTriangle, User, FileText, Tag } from 'lucide-react';
-import { format } from 'date-fns';
+import { CalendarIcon, Clock, AlertTriangle, User, FileText, Tag, Edit } from 'lucide-react';
+import { format, parse } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import { Button } from '@/components/ui/button';
@@ -17,6 +16,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { useCreateTask } from '@/services/task/useCreateTask';
 import { useFormTask } from './use_form_task';
+import { Task } from '@/contexts/userContext';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useUpdateTask } from '@/services/task/useUpdateTask';
 
 const taskSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório').max(100, 'Título deve ter no máximo 100 caracteres'),
@@ -34,27 +36,40 @@ const taskSchema = z.object({
 
 export type TaskFormData = z.infer<typeof taskSchema>;
 
-export function FormTask() {
+type FormTaskProps = {
+    isEdit?: boolean
+    task?: Task
+}
+
+export function FormTask({ isEdit, task }: FormTaskProps) {
     const {
         open,
         priorityOptions,
         setOpen,
         statusOptions
     } = useFormTask()
-    const { mutate: createTask, isPending } = useCreateTask({closeModalCreateTask: setOpen})
-
+    const { mutate: createTask, isPending } = useCreateTask({ closeModalCreateTask: setOpen })
+    const { mutate: updateTask, isPending: isPendingUpdate } = useUpdateTask({id: task?.id, closeModalCreateTask: setOpen})
     const form = useForm<TaskFormData>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
-            title: '',
-            description: '',
-            status: '1',
-            priority: '2',
+            title: isEdit ? task?.title : '',
+            description: isEdit ? task?.description : '',
+            status: isEdit ? task?.status.toString() as any : '1',
+            priority: isEdit ? task?.priority?.id.toString() as any : '2',
+            expiration_date: isEdit && task?.expiration_date
+                ? parse(task?.expiration_date!, "dd/MM/yyyy HH:mm", new Date())
+                : new Date(),
         },
     });
 
     const onSubmit = async (data: TaskFormData) => {
-        createTask(data);
+
+        if (isEdit) {
+            updateTask(data)
+        } else {
+            createTask(data);
+        }
         form.reset()
     };
 
@@ -68,20 +83,29 @@ export function FormTask() {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    <Tag className="w-4 h-4 mr-2" />
-                    Nova Tarefa
-                </Button>
+                {isEdit ? (
+                    <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                    >
+                        <Edit className="mr-2 h-4 w-4" />
+                        Editar
+                    </DropdownMenuItem>
+                ) : (
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                        <Tag className="w-4 h-4 mr-2" />
+                        Nova Tarefa
+                    </Button>
+                )}
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="flex items-center text-slate-800 dark:text-slate-100">
                         <FileText className="w-5 h-5 mr-2 text-blue-600" />
-                        Criar Nova Tarefa
+                        {isEdit ? 'Editar Tarefa' : 'Criar Nova Tarefa'}
                     </DialogTitle>
                     <DialogDescription className="text-slate-600 dark:text-slate-300">
-                        Preencha os detalhes da nova tarefa. Todos os campos são obrigatórios.
+                        Preencha os detalhes da tarefa. Todos os campos são obrigatórios.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -243,23 +267,43 @@ export function FormTask() {
                         >
                             Cancelar
                         </Button>
-                        <Button
-                            type="submit"
-                            disabled={isPending}
-                            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                            {isPending ? (
-                                <>
-                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                                    Criando...
-                                </>
-                            ) : (
-                                <>
-                                    <Tag className="w-4 h-4 mr-2" />
-                                    Criar Tarefa
-                                </>
-                            )}
-                        </Button>
+                        {isEdit ? (
+                            <Button
+                                type="submit"
+                                disabled={isPendingUpdate}
+                                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+                            >
+                                {isPendingUpdate ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                                        Editando...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Tag className="w-4 h-4 mr-2" />
+                                        Editar Tarefa
+                                    </>
+                                )}
+                            </Button>
+                        ) :
+                            <Button
+                                type="submit"
+                                disabled={isPending}
+                                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+                            >
+                                {isPending ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                                        Criando...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Tag className="w-4 h-4 mr-2" />
+                                        Criar Tarefa
+                                    </>
+                                )}
+                            </Button>
+                        }
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -6,6 +6,7 @@ import { getPriorityColor, getStatusColor, getStatusIcon } from "@/utils/utils";
 import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { ConfirmDialogExcludeTask } from "../modals/confirm_dialog_exclude_task/confirm_dialog_exclude_task";
+import { FormTask } from "@/app/pages/tasks/form_task/form_task";
 
 interface CardListTaskProps {
     task: Task
@@ -50,10 +51,10 @@ export function CardListTask({ task, isDashboard }: CardListTaskProps) {
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Ações</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <Edit className="mr-2 h-4 w-4" />
-                                    Editar
-                                </DropdownMenuItem>
+                                <FormTask
+                                    isEdit
+                                    task={task}
+                                />
                                 <ConfirmDialogExcludeTask
                                     idTask={task?.id}
                                 />

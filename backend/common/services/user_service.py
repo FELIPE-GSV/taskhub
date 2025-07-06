@@ -34,11 +34,13 @@ class UserService:
 
         if key == "total_tasks":
             created_yesterday = TaskUser.objects.filter(
-                user=self.user, task__created_at__date=yesterday.date()
+                user=self.user,
+                task__created_at__date=yesterday.date()
             ).exists()
 
             created_this_week = TaskUser.objects.filter(
-                user=self.user, task__created_at__gte=start_of_week
+                user=self.user,
+                task__created_at__gte=start_of_week
             ).count()
 
             if created_yesterday:
@@ -48,30 +50,56 @@ class UserService:
             else:
                 return "Vamos começar a semana com foco e organização! ✨"
 
+        elif key == "tasks_pending":
+            if value == 0:
+                return "Nenhuma pendência no momento."
+
+            from django.db.models import Count, DateField
+            from django.db.models.functions import TruncDate
+
+            grouped = (
+                TaskUser.objects
+                .filter(
+                    user=self.user,
+                    task__expiration_date__lt=timezone.now(),
+                )
+                .exclude(task__status=3)
+                .annotate(expired_day=TruncDate("task__expiration_date"))
+                .values("expired_day")
+                .annotate(total=Count("id"))
+                .order_by("-total")
+            )
+
+            if grouped and grouped[0]["total"] > 1:
+                expired_date = grouped[0]["expired_day"]
+                days_ago = (timezone.now().date() - expired_date).days
+                return (
+                    f"{grouped[0]['total']} tarefas venceram há {days_ago} dias. "
+                )
+
+            messages = [
+                f"Você tem {value} pendências vencidas.",
+                f"Atenção: {value} tarefas estão atrasadas!",
+                f"{value} tarefas precisam de atenção urgente."
+            ]
+            return random.choice(messages)
+
         messages = {
             "tasks_done": [
                 f"Parabéns! Você concluiu {value} tarefas.",
                 f"{value} tarefas finalizadas. Continue assim!",
-                f"Progresso visível: {value} tarefas concluídas.",
+                f"Progresso visível: {value} tarefas concluídas."
             ],
             "tasks_in_progress": [
                 f"Você está trabalhando em {value} tarefas agora.",
                 f"{value} tarefas em andamento. Foco total!",
-                f"Atenção: {value} tarefas ainda em execução.",
-            ],
-            "tasks_pending": (
-                ["Nenhuma pendência no momento."]
-                if value == 0
-                else [
-                    f"Você tem {value} pendências vencidas.",
-                    f"Atenção: {value} tarefas estão atrasadas!",
-                    f"{value} tarefas precisam de atenção urgente.",
-                ]
-            ),
+                f"Atenção: {value} tarefas ainda em execução."
+            ]
         }
 
         options = messages.get(key, [])
         return random.choice(options) if options else ""
+
 
     def return_data_dashboard(self):
         now = timezone.now()

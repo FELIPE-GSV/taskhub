@@ -3,6 +3,7 @@ from common.models import (
     Task,
     TaskUser
 )
+from datetime import datetime
 
 class TaskSerializer(serializers.ModelSerializer):
     expiration_date = serializers.DateTimeField(required=True, allow_null=False, format="%d/%m/%Y %H:%M")

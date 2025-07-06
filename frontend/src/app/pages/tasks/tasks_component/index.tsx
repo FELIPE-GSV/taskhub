@@ -41,15 +41,6 @@ export function TaskComponent() {
                         <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-2">
                             Nenhuma tarefa encontrada
                         </h3>
-                        {/* <p className="text-slate-600 dark:text-slate-300 mb-6">
-                            {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
-                                ? 'Tente ajustar os filtros para encontrar suas tarefas.'
-                                : 'Comece criando sua primeira tarefa.'
-                            }
-                        </p>
-                        {(!searchTerm && statusFilter === 'all' && priorityFilter === 'all') && (
-                            <CreateTaskDialog onTaskCreate={onTaskCreate} />
-                        )} */}
                     </div>
                 ) : (
                     <div className="space-y-4">

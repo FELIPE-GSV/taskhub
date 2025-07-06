@@ -28,6 +28,7 @@ export function TopBar() {
         router.push("/pages/login");
     }
 
+
     return (
         <header className={`bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-3 ${pathname === "/pages/login" ? "hidden" : ""}`}>
             <div className="flex items-center justify-between">
@@ -82,7 +83,7 @@ export function TopBar() {
                             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                                 <Avatar className="h-10 w-10">
                                     <AvatarImage
-                                        src={user?.profile_picture as any}
+                                        src={user?.profile_picture as string}
                                         alt={user?.first_name}
                                         className="object-cover"
                                     />

@@ -21,7 +21,6 @@ export default function Tasks() {
                     </p>
                 </div>
                 <FormTask />
-                {/* <CreateTaskDialog onTaskCreate={onTaskCreate} /> */}
             </div>
             <div className="w-full mt-6">
                 <FiltersTasks />

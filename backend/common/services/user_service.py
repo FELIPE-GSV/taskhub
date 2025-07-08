@@ -54,7 +54,7 @@ class UserService:
             if value == 0:
                 return "Nenhuma pendência no momento."
 
-            from django.db.models import Count, DateField
+            from django.db.models import Count
             from django.db.models.functions import TruncDate
 
             grouped = (
@@ -121,7 +121,7 @@ class UserService:
         latest_tasks = TaskUser.objects.filter(user=self.user).order_by("-id")[:4]
         tasks_to_serialize = [task.task for task in latest_tasks]
         serializer = TaskSerializer(tasks_to_serialize, many=True)
-
+ 
         weekly_progress_percent = self.calculates_weekly_productivity()
 
         return {

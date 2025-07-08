@@ -30,6 +30,20 @@ class UserViewSet(viewsets.ModelViewSet):
     
     @action(
         detail=False,
+        url_path='get-user-by-email',
+        url_name='get_user_by_email',
+        methods=['GET'],
+    )
+    def get_user_by_email(self, request):
+        email = request.query_params.get('email')
+        user = CustomUser.objects.filter(email=email).first()
+        if not user:
+            return Response(data={"message": "Usuário não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegisterSerializer(user)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+    @action(
+        detail=False,
         methods=['GET'],
         url_path='dashboard-user',
         url_name='dashboard_user',

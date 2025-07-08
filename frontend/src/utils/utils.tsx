@@ -1,3 +1,4 @@
+import { Group } from "@/services/groups/useListGroups";
 import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import type { JSX } from "react";
 
@@ -28,3 +29,14 @@ export const getPriorityColor = (priority: number): string =>
 
 export const getStatusIcon = (status: number): JSX.Element =>
     statusIconMap[status] ?? <Clock className="w-6 h-6" />;
+
+const getPrivacyColor = (privacy: Group['privacy']) => {
+    switch (privacy) {
+      case 'private':
+        return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300';
+      case 'public':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300';
+      default:
+        return 'bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-300';
+    }
+  };

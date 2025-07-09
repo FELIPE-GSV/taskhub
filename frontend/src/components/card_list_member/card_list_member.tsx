@@ -3,15 +3,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Crown, X } from "lucide-react"
 import { Button } from "../ui/button"
-import { useFormGroup } from "@/app/pages/groups/form_group/useFormGroup"
 
 type CardListMemberProps = {
     member: User | null
+    handleRemoveMember: (id?: number) => void
 }
 
-export function CardListMember({ member }: CardListMemberProps) {
+export function CardListMember({ member, handleRemoveMember }: CardListMemberProps) {
 
-    const { user, handleRemoveMember } = useFormGroup()
+    const { user } = useUser()
 
     return (
         <div
@@ -42,15 +42,17 @@ export function CardListMember({ member }: CardListMemberProps) {
                         Criador
                     </Badge>
                 )}
-                <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleRemoveMember(member?.id)}
-                    className="h-8 w-8 p-0 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
-                >
-                    <X className="w-4 h-4" />
-                </Button>
+                {member && member.id !== user?.id && (
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveMember(member?.id)}
+                        className="h-8 w-8 p-0 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                        <X className="w-4 h-4" />
+                    </Button>
+                )}
             </div>
         </div>
     )

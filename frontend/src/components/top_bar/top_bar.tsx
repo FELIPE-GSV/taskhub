@@ -4,11 +4,11 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useUser } from "@/contexts/userContext";
 import { usePathname, useRouter } from "next/navigation";
-import { useListNotification } from "@/services/notifications/useListNotification";
+import { Notification, useListNotification } from "@/services/notifications/useListNotification";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { useReadNotification } from "@/services/notifications/useReadNotification";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ModalAcceptInviteGroup } from "./modal_accept_invite_group/modal_accept_invite_group";
 
 
 export function TopBar() {
@@ -16,9 +16,11 @@ export function TopBar() {
     const { user, notifications, setNotifications } = useUser()
     const router = useRouter()
     const pathname = usePathname()
-    const { mutate: markNotificationAsRead } = useReadNotification()
     const { data } = useListNotification()
     const unreadNotifications = notifications?.filter((notification) => !notification.read).length
+    const [openModalAcceptInvite, setOpenModalAcceptInvite] = useState<boolean>(false)
+    const [notificiationSelected, setNotificiationSelected] = useState<Notification | null>(null)
+
 
     useEffect(() => {
         if (data) {
@@ -69,7 +71,13 @@ export function TopBar() {
                                 <DropdownMenuItem
                                     key={notification.id}
                                     className="flex flex-col items-start p-4 cursor-pointer"
-                                    onClick={() => markNotificationAsRead({ id: notification.id })}
+                                    onClick={() => {
+                                        // markNotificationAsRead({ id: notification.id })
+                                        if (notification.type === 2 && !notification.accepted_invite) {
+                                            setOpenModalAcceptInvite(true)
+                                            setNotificiationSelected(notification)
+                                        }
+                                    }}
                                     onSelect={(e) => e.preventDefault()}
                                 >
                                     <div className="flex items-start justify-between w-full">
@@ -126,6 +134,13 @@ export function TopBar() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
+                {openModalAcceptInvite && (
+                    <ModalAcceptInviteGroup
+                        open={openModalAcceptInvite}
+                        handleOpenChange={(value) => setOpenModalAcceptInvite(value)}
+                        notification={notificiationSelected as Notification}
+                    />
+                )}
             </div>
         </header>
     )

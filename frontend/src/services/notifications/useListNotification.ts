@@ -5,7 +5,10 @@ import { useQuery } from "@tanstack/react-query"
 export type Notification = {
     id: number
     receiver: number
-    sender: number | null
+    sender: {
+        id: number
+        profile_photo: string
+    }
     sender_name: string | null
     title: string
     message: string
@@ -14,6 +17,12 @@ export type Notification = {
     read: boolean
     created_at: string
     time_since_created: string
+    group?: {
+        id: number
+        name: string
+    }
+    accepted_invite: boolean
+    message_invite: string
 }
 
 export const useListNotification = () => {

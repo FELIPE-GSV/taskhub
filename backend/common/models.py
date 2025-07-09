@@ -100,10 +100,19 @@ class Notification(TrackableMixin):
         blank=True
     )
     message = models.TextField()
+    message_invite = models.TextField(null=True, blank=True)
     title = models.CharField(max_length=100)
     type = models.IntegerField(
         choices=NotificationTypeEnum.choices,
         default=1
     )
     read = models.BooleanField(default=False)
+    accepted_invite = models.BooleanField(default=False)
+    group = models.ForeignKey(
+        "Group",
+        on_delete=models.CASCADE,
+        related_name="group_notification",
+        null=True,
+        blank=True
+    )
     

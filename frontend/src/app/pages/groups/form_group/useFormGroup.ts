@@ -1,5 +1,6 @@
 import { ToastService, TypeToast } from "@/components/toast_service/toast_service";
 import { User, useUser } from "@/contexts/userContext";
+import { useCreateGroup } from "@/services/groups/useCreateGroup";
 import { useGetUserByEmail } from "@/services/user/useGetUserByEmail";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react"
@@ -12,6 +13,7 @@ const groupSchema = z.object({
     privacy: z.enum(['1', '2'], {
         required_error: 'Privacidade é obrigatória',
     }),
+    message: z.string().min(1, 'Mensagem é obrigatória').max(200, 'Mensagem deve ter no.maxcdn 200 caracteres'),
 })
 type GroupFormData = z.infer<typeof groupSchema>;
 
@@ -21,6 +23,7 @@ export const useFormGroup = () => {
     const [open, setOpen] = useState(false)
     const [idsUsers, setIdsUsers] = useState<number[]>([])
     const { mutateAsync: fetchUserByEmail } = useGetUserByEmail()
+    const {mutate: createGroup, isPending} = useCreateGroup({setIsOpen: setOpen})
     const form = useForm<GroupFormData>({
         resolver: zodResolver(groupSchema),
         defaultValues: {
@@ -44,10 +47,13 @@ export const useFormGroup = () => {
     }
 
     const handleRemoveMember = (id?: number) => {
-        const membersFiltered = members.filter(member => member.id !== id)
-        setMembers(membersFiltered)
-        const usersFiltered = idsUsers.filter(idUser => idUser !== id)
-        setIdsUsers(usersFiltered)
+        if (!id) return;
+        if (id === user?.id) {
+            ToastService(TypeToast.WARNING, 'Você não pode se remover do grupo.');
+            return;
+        }
+        setMembers(prev => prev.filter(member => member.id !== id));
+        setIdsUsers(prev => prev.filter(userId => userId !== id));
     }
 
     useEffect(() => {
@@ -68,7 +74,13 @@ export const useFormGroup = () => {
     };
 
     const onSubmit = (data: GroupFormData) => {
-        console.log(data)
+        createGroup({
+            privacy: data.privacy === "1" ? 1 : 2 ,
+            name: data.name,
+            description: data.description,
+            user_ids: idsUsers,
+            message: data.message
+        })
     }
 
     return {
@@ -84,6 +96,7 @@ export const useFormGroup = () => {
         onSubmit,
         user,
         handleInviteByEmail,
-        handleRemoveMember
+        handleRemoveMember,
+        isPending
     }
 }

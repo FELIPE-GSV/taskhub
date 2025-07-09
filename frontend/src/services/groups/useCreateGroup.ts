@@ -4,14 +4,18 @@ import { queryClient } from "@/lib/queryClient"
 import { useMutation } from "@tanstack/react-query"
 import { Group } from "./useListGroups"
 
-export const useCreateGroup = () => {
+type UseCreateGroupProps = {
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+export const useCreateGroup = ({ setIsOpen }: UseCreateGroupProps) => {
 
     return useMutation({
         mutationFn: async (payload: {
             name: string,
             description: string,
             privacy: number,
-            user_ids: number[]
+            user_ids: number[],
+            message: string
         }): Promise<Group | null> => {
             const response = await API.post('/groups/', payload, {
                 headers: {
@@ -26,6 +30,9 @@ export const useCreateGroup = () => {
         onSuccess: (data) => {
             if (data) {
                 queryClient.invalidateQueries({ queryKey: ['groups'] })
+                queryClient.refetchQueries({ queryKey: ['notifications'] })
+                ToastService(TypeToast.SUCCESS, "Grupo criado com sucesso!")
+                setIsOpen(false)
             }
         },
         onError: (error: any) => {

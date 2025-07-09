@@ -17,7 +17,8 @@ export function FormGroup() {
         form,
         onSubmit,
         inviteEmail, setInviteEmail,
-        members, handleInviteByEmail
+        members, handleInviteByEmail,
+        handleRemoveMember, isPending
     } = useFormGroup()
 
 
@@ -89,21 +90,21 @@ export function FormGroup() {
                                         <SelectValue placeholder="Selecione a privacidade" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="private">
-                                            <div className="flex items-center">
-                                                <Shield className="w-4 h-4 mr-2 text-slate-600" />
-                                                <div>
-                                                    <p className="font-medium">Privado</p>
-                                                    <p className="text-xs text-slate-500">Apenas membros convidados</p>
-                                                </div>
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="public">
+                                        <SelectItem value="1">
                                             <div className="flex items-center">
                                                 <Users className="w-4 h-4 mr-2 text-slate-600" />
                                                 <div>
                                                     <p className="font-medium">Público</p>
                                                     <p className="text-xs text-slate-500">Qualquer um pode solicitar entrada</p>
+                                                </div>
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="2">
+                                            <div className="flex items-center">
+                                                <Shield className="w-4 h-4 mr-2 text-slate-600" />
+                                                <div>
+                                                    <p className="font-medium">Privado</p>
+                                                    <p className="text-xs text-slate-500">Apenas membros convidados</p>
                                                 </div>
                                             </div>
                                         </SelectItem>
@@ -155,16 +156,32 @@ export function FormGroup() {
                                             <CardListMember
                                                 key={index}
                                                 member={member}
+                                                handleRemoveMember={handleRemoveMember}
                                             />
                                         )
                                     })}
                                 </div>
                                 {members && members?.length > 1 && (
-                                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                                        <p className="text-sm text-blue-700 dark:text-blue-300">
-                                            <Mail className="w-4 h-4 inline mr-1" />
-                                            Os convites serão enviados automaticamente após a criação do grupo.
-                                        </p>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                                            <p className="text-sm text-blue-700 dark:text-blue-300">
+                                                <Mail className="w-4 h-4 inline mr-1" />
+                                                Os convites serão enviados automaticamente após a criação do grupo.
+                                            </p>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Textarea
+                                                id="message"
+                                                placeholder="Descreva um convite para os membros..."
+                                                className="border-2 focus:border-blue-500 transition-colors min-h-[80px] resize-none"
+                                                {...form.register('message')}
+                                            />
+                                            {form.formState.errors.message && (
+                                                <p className="text-sm text-red-600 dark:text-red-400">
+                                                    {form.formState.errors.message.message}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -181,10 +198,10 @@ export function FormGroup() {
                         </Button>
                         <Button
                             type="submit"
-                            // disabled={isSubmitting}
+                            disabled={isPending}
                             className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
                         >
-                            {false ? (
+                            {isPending ? (
                                 <>
                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                                     Criando...

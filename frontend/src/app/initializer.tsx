@@ -88,7 +88,7 @@ export function Initializer() {
       fetchDashboard();
       fetchNotifications();
     }
-  }, [router, setUser]);
+  }, [router, setUser, setDashboardUser, setNotifications]);
 
   return null;
 }

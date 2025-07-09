@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from common.enum import RoleMemberGroupEnum, NotificationTypeEnum
 from django.db.models import Case, When, Value, IntegerField
+from rest_framework.exceptions import ValidationError
 
 class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
@@ -62,6 +63,7 @@ class GroupViewSet(viewsets.ModelViewSet):
         description = data.get("description", "")
         privacy = data.get("privacy", "private")
         user_ids = data.get("user_ids", [])
+        message = data.get("message", "") 
         
         group = Group.objects.create(
             name=name,
@@ -86,7 +88,9 @@ class GroupViewSet(viewsets.ModelViewSet):
                     title="Convite",
                     message=f"{user.first_name} convidou você para o grupo {group.name}.",
                     type=NotificationTypeEnum.GROUP_INVITE,
-                    read=False
+                    read=False,
+                    message_invite=message,
+                    group=group
                 )
             except CustomUser.DoesNotExist:
                 continue 

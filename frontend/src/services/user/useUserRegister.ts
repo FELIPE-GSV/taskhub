@@ -24,7 +24,12 @@ export function useUserRegister({ setIsLogin }: Props) {
             ToastService(TypeToast.SUCCESS, 'Usuário registrado com sucesso!')
         },
         onError: (error: any) => {
-            ToastService(TypeToast.WARNING, error?.response?.data?.detail)
+            console.log(error)
+            if (error.response.data.email){
+                ToastService(TypeToast.WARNING, "Já existe um usuário com esse email.")
+            } else {
+                ToastService(TypeToast.WARNING, error?.response?.data?.detail)
+            }
         },
     })
 }

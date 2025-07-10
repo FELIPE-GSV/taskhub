@@ -22,3 +22,9 @@ class PrivacyGroupEnum(models.IntegerChoices):
 class RoleMemberGroupEnum(models.IntegerChoices):
     ADMIN = 1, ("Admin")
     MEMBER = 2, ("Membro")
+    
+class InviteStatusEnum(models.IntegerChoices):
+    NO_INVITE = 1, ("Sem convite")
+    PENDING = 2, ("Pendente")
+    ACCEPTED = 3, ("Aceito")
+    DECLINED = 4, ("Recusado") 

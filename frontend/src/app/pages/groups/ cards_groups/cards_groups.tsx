@@ -1,8 +1,17 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUser } from "@/contexts/userContext";
+import { Group } from "@/services/groups/useListGroups";
 import { Crown, Shield, Users } from "lucide-react";
+type CardGroupsProps = {
+    groups: Group[] | undefined | null
+}
+export function CardGroups({ groups }: CardGroupsProps) {
+    const { user } = useUser()
+    const total_groups = groups?.length
+    const groups_admin = groups?.filter((group) => group.members.some((member) => member.role === 1 && member.id_user === user?.id)).length
+    const groups_created = groups?.filter((group) => group.creatorId === user?.id).length
 
-export function CardGroups() {
     return (
         <>
             <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800">
@@ -14,7 +23,7 @@ export function CardGroups() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col items-center justify-center gap-3">
-                        <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{5}</div>
+                        <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{total_groups}</div>
                         <p className="text-xs text-blue-700 dark:text-blue-300">
                             Participando ativamente
                         </p>
@@ -30,7 +39,7 @@ export function CardGroups() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col items-center justify-center gap-3">
-                        <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">{2}</div>
+                        <div className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">{groups_admin}</div>
                         <p className="text-xs text-emerald-700 dark:text-emerald-300">
                             Gerenciando grupos
                         </p>
@@ -46,7 +55,7 @@ export function CardGroups() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col items-center justify-center gap-3">
-                        <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">{3}</div>
+                        <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">{groups_created}</div>
                         <p className="text-xs text-purple-700 dark:text-purple-300">
                             Grupos fundados
                         </p>

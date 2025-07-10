@@ -21,7 +21,7 @@ export type Notification = {
         id: number
         name: string
     }
-    accepted_invite: boolean
+    invite_status: number
     message_invite: string
 }
 

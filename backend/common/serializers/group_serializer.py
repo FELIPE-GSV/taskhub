@@ -5,10 +5,11 @@ from common.models import Group, GroupMember, TaskUser
 class GroupMemberSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     avatar = serializers.SerializerMethodField()
+    id_user = serializers.SerializerMethodField()
 
     class Meta:
         model = GroupMember
-        fields = ['id', 'name', 'avatar', 'role']
+        fields = ['id', 'name', 'avatar', 'role', 'id_user']
 
     def get_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}".strip()
@@ -21,6 +22,9 @@ class GroupMemberSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(url)
             return url
         return None
+
+    def get_id_user(self, obj):
+        return obj.user.id
 
 
 class GroupSerializer(serializers.ModelSerializer):

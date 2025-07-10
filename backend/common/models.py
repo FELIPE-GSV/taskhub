@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from  common.managers.user_manager import CustomUserManager
-from common.enum import StatusTask, PriorityTaskEnum, NotificationTypeEnum, PrivacyGroupEnum, RoleMemberGroupEnum
+from common.enum import StatusTask, PriorityTaskEnum, NotificationTypeEnum, PrivacyGroupEnum, RoleMemberGroupEnum, InviteStatusEnum
 from common.mixin import TrackableMixin
 
 
@@ -107,7 +107,10 @@ class Notification(TrackableMixin):
         default=1
     )
     read = models.BooleanField(default=False)
-    accepted_invite = models.BooleanField(default=False)
+    invite_status = models.IntegerField(
+        choices=InviteStatusEnum.choices,
+        default=1
+    )
     group = models.ForeignKey(
         "Group",
         on_delete=models.CASCADE,

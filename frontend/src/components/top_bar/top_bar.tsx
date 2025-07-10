@@ -9,6 +9,7 @@ import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { ModalAcceptInviteGroup } from "./modal_accept_invite_group/modal_accept_invite_group";
+import { useReadNotification } from "@/services/notifications/useReadNotification";
 
 
 export function TopBar() {
@@ -16,6 +17,7 @@ export function TopBar() {
     const { user, notifications, setNotifications } = useUser()
     const router = useRouter()
     const pathname = usePathname()
+    const {mutate: markNotificationAsRead } = useReadNotification()
     const { data } = useListNotification()
     const unreadNotifications = notifications?.filter((notification) => !notification.read).length
     const [openModalAcceptInvite, setOpenModalAcceptInvite] = useState<boolean>(false)
@@ -72,8 +74,8 @@ export function TopBar() {
                                     key={notification.id}
                                     className="flex flex-col items-start p-4 cursor-pointer"
                                     onClick={() => {
-                                        // markNotificationAsRead({ id: notification.id })
-                                        if (notification.type === 2 && !notification.accepted_invite) {
+                                        markNotificationAsRead({ id: notification.id })
+                                        if (notification.type === 2 && notification.invite_status === 2) {
                                             setOpenModalAcceptInvite(true)
                                             setNotificiationSelected(notification)
                                         }

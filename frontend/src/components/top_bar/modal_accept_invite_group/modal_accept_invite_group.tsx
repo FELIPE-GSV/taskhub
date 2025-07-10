@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useAccpetInviteGroup } from "@/services/groups/useAcceptInviteGroup"
+import { useDeclineInviteGroup } from "@/services/groups/useDeclineInviteGroup"
 import { Notification } from "@/services/notifications/useListNotification"
 import { Check, X } from "lucide-react"
 
@@ -10,6 +12,10 @@ type ModalAcceptInviteGroup = {
     notification: Notification
 }
 export function ModalAcceptInviteGroup({ open, handleOpenChange, notification }: ModalAcceptInviteGroup) {
+
+    const {mutate: acceptInvite, isPending: isProcessingAccept} = useAccpetInviteGroup({ setIsOpen: handleOpenChange })
+    const {mutate: declineInvite, isPending: isProcessingDecline} = useDeclineInviteGroup({ setIsOpen: handleOpenChange })
+
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className="sm:max-w-[400px]">
@@ -25,7 +31,7 @@ export function ModalAcceptInviteGroup({ open, handleOpenChange, notification }:
                     {/* Quem convidou */}
                     <div className="flex items-center space-x-3">
                         <Avatar className="h-12 w-12">
-                            <AvatarImage src={notification.sender.profile_photo} alt={notification.sender.id.toString()} />
+                            <AvatarImage src={notification.sender.profile_photo as string} alt={notification.sender.id.toString()} />
                             <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
                                 {notification?.sender_name?.charAt(0).toUpperCase()}
                             </AvatarFallback>
@@ -49,11 +55,13 @@ export function ModalAcceptInviteGroup({ open, handleOpenChange, notification }:
                 <DialogFooter className="flex gap-2 pt-4">
                     <Button
                         variant="outline"
-                        // onClick={handleDecline}
-                        // disabled={isProcessing}
+                        onClick={()=> declineInvite({
+                            id_notification: notification.id
+                        })}
+                        disabled={isProcessingDecline}
                         className="flex-1"
                     >
-                        {false ? (
+                        {isProcessingDecline ? (
                             <>
                                 <div className="w-4 h-4 border-2 border-slate-600 border-t-transparent rounded-full animate-spin mr-2" />
                                 Recusando...
@@ -66,11 +74,14 @@ export function ModalAcceptInviteGroup({ open, handleOpenChange, notification }:
                         )}
                     </Button>
                     <Button
-                        // onClick={handleAccept}
-                        // disabled={isProcessing}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={()=> acceptInvite({
+                            id_group: notification.group?.id as number,
+                            id_notification: notification.id
+                        })}
+                        disabled={isProcessingAccept}
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white "
                     >
-                        {false ? (
+                        {isProcessingAccept ? (
                             <>
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                                 Aceitando...

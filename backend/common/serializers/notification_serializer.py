@@ -27,7 +27,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             "time_since_created",
             "group",
             "message_invite",
-            "accepted_invite",
+            "invite_status",
         ]
         read_only_fields = [
             "id",
@@ -55,7 +55,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         if obj.sender:
             return {
                 "id": obj.sender.id,
-                "profile_foto": f"http://localhost:8000/media/{obj.sender.profile_picture}",
+                "profile_photo": f"http://localhost:8000/media/{obj.sender.profile_picture}",
             }
         return None
 

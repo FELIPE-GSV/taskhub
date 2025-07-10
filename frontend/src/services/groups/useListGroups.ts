@@ -5,14 +5,15 @@ export interface GroupMember {
   id: number;
   name: string;
   avatar: string | null;
-  role: 'admin' | 'member';
+  role: number;
+  id_user: number;
 }
 
 export interface Group {
   id: number;
   name: string;
   description: string;
-  privacy: 'public' | 'private';
+  privacy: number;
   createdAt: string;
   members: GroupMember[];
   completedTasks: number;

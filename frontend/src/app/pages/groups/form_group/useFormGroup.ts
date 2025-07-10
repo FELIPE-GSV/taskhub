@@ -13,7 +13,7 @@ const groupSchema = z.object({
     privacy: z.enum(['1', '2'], {
         required_error: 'Privacidade é obrigatória',
     }),
-    message: z.string().min(1, 'Mensagem é obrigatória').max(200, 'Mensagem deve ter no.maxcdn 200 caracteres'),
+    message: z.string().min(1, 'Mensagem é obrigatória').max(300, 'Mensagem deve ter máximo 300 caracteres'),
 })
 type GroupFormData = z.infer<typeof groupSchema>;
 

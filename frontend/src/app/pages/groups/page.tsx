@@ -12,7 +12,7 @@ export default function Groups() {
     const { data: groups } = useListGroups()
 
     return (
-        <main className="w-full h-screen flex flex-col justify-start items-start px-[15%] py-4">
+        <main className="w-full h-screen flex flex-col justify-start items-start px-[15%] py-4 space-y-6">
             <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center">
@@ -26,10 +26,10 @@ export default function Groups() {
                 <FormGroup />
             </div>
             <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <CardGroups />
-                <FiltersGroups />
-                <GroupsComponent groups={groups} />
+                <CardGroups groups={groups}/>
             </div>
+            <FiltersGroups />
+            <GroupsComponent groups={groups} />
         </main>
     );
 }

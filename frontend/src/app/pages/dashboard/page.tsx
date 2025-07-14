@@ -5,7 +5,7 @@ import { CardsDashboard } from "./cards_dashboard/card_dashboards";
 import { Activity, Target, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/userContext";
-import { CardListTask } from "../../../components/card_list_task/card_list_task";
+import { CardListTask } from "../../../components/cards/card_list_task/card_list_task";
 import { useRouter } from "next/navigation";
 import { useListDashboard } from "@/services/user/useListDashboard";
 import { useEffect } from "react";

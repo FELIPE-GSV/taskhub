@@ -1,8 +1,8 @@
 import { User, useUser } from "@/contexts/userContext"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Badge } from "../ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
+import { Badge } from "../../ui/badge"
 import { Crown, X } from "lucide-react"
-import { Button } from "../ui/button"
+import { Button } from "../../ui/button"
 
 type CardListMemberProps = {
     member: User | null

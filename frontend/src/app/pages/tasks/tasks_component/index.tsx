@@ -1,4 +1,4 @@
-import { CardListTask } from "@/components/card_list_task/card_list_task";
+import { CardListTask } from "@/components/cards/card_list_task/card_list_task";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Task, useUser } from "@/contexts/userContext";
 import { cn } from "@/lib/utils";

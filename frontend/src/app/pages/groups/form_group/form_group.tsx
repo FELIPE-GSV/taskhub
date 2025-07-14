@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CardListMember } from "@/components/card_list_member/card_list_member";
+import { CardListMember } from "@/components/cards/card_list_member/card_list_member";
 
 export function FormGroup() {
 

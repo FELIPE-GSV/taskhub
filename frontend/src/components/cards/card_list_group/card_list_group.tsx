@@ -1,11 +1,13 @@
 import { Group } from "@/services/groups/useListGroups"
 import { Crown, Eye, LogOut, MoreHorizontal, Settings, Shield, Trash2, User, UserPlus, Users } from "lucide-react"
-import { Badge } from "../ui/badge"
+import { Badge } from "../../ui/badge"
 import { getPrivacyGroupColor, getRoleGroupColor } from "@/utils/utils"
 import { useUser } from "@/contexts/userContext"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Button } from "../ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu"
+import { Button } from "../../ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
+import { useLeaveGroup } from "@/services/groups/useLeaveGroup"
+import { FormInviteMembers } from "@/app/pages/groups/form_invite_members/form_invite_members"
 
 type CardListGroupProps = {
     group: Group
@@ -20,7 +22,7 @@ export function CardListGroup({ group }: CardListGroupProps) {
         return member?.role || null;
     };
     const userRole = getUserRole(group);
-    console.log(userRole)
+    const { mutate: leaveGroup } = useLeaveGroup()
 
     return (
         <div
@@ -88,14 +90,7 @@ export function CardListGroup({ group }: CardListGroupProps) {
                                     <Settings className="mr-2 h-4 w-4" />
                                     Configurações
                                 </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        // handleInviteMembers(group)
-                                    }}
-                                >
-                                    <UserPlus className="mr-2 h-4 w-4" />
-                                    Convidar Membros
-                                </DropdownMenuItem>
+                                <FormInviteMembers group={group} />
                             </>
                         )}
                         <DropdownMenuSeparator />
@@ -113,7 +108,7 @@ export function CardListGroup({ group }: CardListGroupProps) {
                             <DropdownMenuItem
                                 className="text-red-600 dark:text-red-400"
                                 onClick={() => {
-                                    // handleLeaveGroup(group.id)
+                                    leaveGroup(group.id)
                                 }}
                             >
                                 <LogOut className="mr-2 h-4 w-4 text-red-600" />

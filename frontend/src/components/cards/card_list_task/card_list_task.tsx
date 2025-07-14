@@ -4,8 +4,8 @@ import { Task } from "@/contexts/userContext";
 import { cn } from "@/lib/utils";
 import { getPriorityColor, getStatusColor, getStatusIcon } from "@/utils/utils";
 import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { ConfirmDialogExcludeTask } from "../modals/confirm_dialog_exclude_task/confirm_dialog_exclude_task";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu";
+import { ConfirmDialogExcludeTask } from "../../modals/confirm_dialog_exclude_task/confirm_dialog_exclude_task";
 import { FormTask } from "@/app/pages/tasks/form_task/form_task";
 
 interface CardListTaskProps {

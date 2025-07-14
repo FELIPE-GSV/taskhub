@@ -1,4 +1,4 @@
-import { CardListGroup } from "@/components/card_list_group/card_list_group";
+import { CardListGroup } from "@/components/cards/card_list_group/card_list_group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Group } from "@/services/groups/useListGroups";
 import { Users } from "lucide-react";
@@ -7,9 +7,6 @@ type GroupsComponentProps = {
     groups: Group[] | undefined | null
 }
 export function GroupsComponent({ groups }: GroupsComponentProps) {
-
-
-
     return (
         <Card className="w-full">
             <CardHeader>

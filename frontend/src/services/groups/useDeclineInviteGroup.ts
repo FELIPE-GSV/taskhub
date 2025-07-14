@@ -18,13 +18,18 @@ export const useDeclineInviteGroup = ({ setIsOpen }: UseDeclineInviteGroupProps)
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            if (response.data) {
+            return response.data
+        },
+        onSuccess: (data) => {
+            if (data) {
                 queryClient.refetchQueries({ queryKey: ['notifications'] })
                 queryClient.refetchQueries({ queryKey: ['groups'] })
                 setIsOpen(false)
                 ToastService(TypeToast.SUCCESS, "Convite recusado com sucesso!")
-                return response.data
             }
+        },
+        onError: (error: any) => {
+            ToastService(TypeToast.WARNING, error?.response?.data?.detail)
         }
     })
 }

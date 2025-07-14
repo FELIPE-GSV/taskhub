@@ -42,9 +42,9 @@ class TaskViewSet(viewsets.ModelViewSet):
         tasks = Task.objects.filter(id__in=task_users_qs.values_list("task_id", flat=True))
         if title:
             tasks = tasks.filter(title__icontains=title)
-        if status_param:
+        if status_param and status_param != '0':
             tasks = tasks.filter(status=status_param)
-        if priority_param:
+        if priority_param and priority_param != '0':
             tasks = tasks.filter(priority=priority_param)
             
         data_return = tasks.order_by('-id')

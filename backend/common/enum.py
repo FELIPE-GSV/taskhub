@@ -28,3 +28,8 @@ class InviteStatusEnum(models.IntegerChoices):
     PENDING = 2, ("Pendente")
     ACCEPTED = 3, ("Aceito")
     DECLINED = 4, ("Recusado") 
+    
+class TaskGroupStatusEnum(models.IntegerChoices):
+    TO_DO = 1, ("A fazer")
+    IN_PROGRESS = 2, ("Em andamento")
+    DONE = 3, ("Concluído")

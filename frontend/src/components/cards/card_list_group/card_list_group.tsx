@@ -1,5 +1,5 @@
 import { Group } from "@/services/groups/useListGroups"
-import { Crown, Eye, LogOut, MoreHorizontal, Settings, Shield, Trash2, User, UserPlus, Users } from "lucide-react"
+import { Crown, LogOut, MoreHorizontal, Shield, Trash2, User, Users } from "lucide-react"
 import { Badge } from "../../ui/badge"
 import { getPrivacyGroupColor, getRoleGroupColor } from "@/utils/utils"
 import { useUser } from "@/contexts/userContext"
@@ -8,6 +8,7 @@ import { Button } from "../../ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 import { useLeaveGroup } from "@/services/groups/useLeaveGroup"
 import { FormInviteMembers } from "@/app/pages/groups/form_invite_members/form_invite_members"
+import { ViewGroupDialog } from "@/app/pages/groups/view_group_dialog/view_group_dialog"
 
 type CardListGroupProps = {
     group: Group
@@ -76,22 +77,9 @@ export function CardListGroup({ group }: CardListGroupProps) {
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Ações</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() => {
-                                // handleViewGroup(group)
-                            }}
-                        >
-                            <Eye className="mr-2 h-4 w-4" />
-                            Visualizar
-                        </DropdownMenuItem>
+                        <ViewGroupDialog group={group} />
                         {(userRole === 1 || isCreator) && (
-                            <>
-                                <DropdownMenuItem>
-                                    <Settings className="mr-2 h-4 w-4" />
-                                    Configurações
-                                </DropdownMenuItem>
-                                <FormInviteMembers group={group} />
-                            </>
+                            <FormInviteMembers group={group} />
                         )}
                         <DropdownMenuSeparator />
                         {isCreator ? (

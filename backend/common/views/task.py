@@ -57,6 +57,4 @@ class TaskViewSet(viewsets.ModelViewSet):
         task_remote_to_delete = TaskUser.objects.filter(task=instance).first()
         task_remote_to_delete.delete()
         instance.delete()
-        return Response(data={"message": "Tarefa excluida com sucesso!"},status=status.HTTP_200_OK)
-        
-        
+        return Response(data={"message": "Tarefa excluida com sucesso!"},status=status.HTTP_200_OK)    

@@ -7,6 +7,7 @@ export interface GroupMember {
     avatar: string | null;
     role: number;
     id_user: number;
+    email: string;
 }
 
 export interface Group {

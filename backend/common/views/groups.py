@@ -1,13 +1,14 @@
 from rest_framework import viewsets, permissions
-from common.models import Group, GroupMember, CustomUser, Notification
-from common.serializers.group_serializer import GroupSerializer
+from common.models import Group, GroupMember, CustomUser, Notification, Task, TaskUser
+from common.serializers.group_serializer import GroupSerializer, TaskGroupSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from common.enum import RoleMemberGroupEnum, NotificationTypeEnum, InviteStatusEnum
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
-
+from common.services.group_service import GroupService
+from django.db import transaction
+from common.types import TaskGroupData
 
 class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
@@ -195,3 +196,34 @@ class GroupViewSet(viewsets.ModelViewSet):
         return Response(
             data={"success": "Saiu do grupo com sucesso!"}, status=status.HTTP_200_OK
         )
+
+    @action(
+        detail=True,
+        methods=['POST'],
+        url_path='create-task-group',
+        url_name='create_task_group',
+    )
+    @transaction.atomic
+    def create_task_group(self, request, pk=None):
+        group = self.get_object()
+        task_group_data = TaskGroupData(**request.data)
+        service = GroupService(
+            task_group_data=task_group_data,
+            group=group,
+            user=request.user
+        )
+        service.init_task_group()
+        return Response(
+            data={"success": "Tarefa criada com sucesso!"}, status=status.HTTP_200_OK
+        )
+    
+    @action(detail=True, methods=["get"], url_path="tasks")
+    def list_group_tasks(self, request, pk=None):
+        group = self.get_object()
+        task_ids = TaskUser.objects.filter(group=group).values_list('task_id', flat=True).distinct()
+        tasks = Task.objects.filter(id__in=task_ids).order_by('-id')
+        serializer = TaskGroupSerializer(tasks, many=True, context={'request': request, 'group': group})
+        return Response(serializer.data)
+        
+        
+        

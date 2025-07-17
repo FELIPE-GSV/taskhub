@@ -3,7 +3,7 @@ from common.models import Group, GroupMember, CustomUser, Notification, Task, Ta
 from common.serializers.group_serializer import GroupSerializer, TaskGroupSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from common.enum import RoleMemberGroupEnum, NotificationTypeEnum, InviteStatusEnum
+from common.enum import RoleMemberGroupEnum, NotificationTypeEnum, InviteStatusEnum, TaskGroupStatusEnum
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework.decorators import action
 from common.services.group_service import GroupService
@@ -210,7 +210,8 @@ class GroupViewSet(viewsets.ModelViewSet):
         service = GroupService(
             task_group_data=task_group_data,
             group=group,
-            user=request.user
+            user=request.user,
+            request=request
         )
         service.init_task_group()
         return Response(
@@ -224,6 +225,23 @@ class GroupViewSet(viewsets.ModelViewSet):
         tasks = Task.objects.filter(id__in=task_ids).order_by('-id')
         serializer = TaskGroupSerializer(tasks, many=True, context={'request': request, 'group': group})
         return Response(serializer.data)
+    
+    @action(detail=True, methods=["PATCH"], url_path="toggle-task-group")
+    def init_task_group(self, request, pk=None):
+        is_in_progress = request.query_params.get("is_in_progress")
+        group = self.get_object()
+        data = request.data
+        task = Task.objects.filter(id=data['task_id']).first()
+        task_user = TaskUser.objects.filter(task=task, user=request.user, group=group).first()
+        if is_in_progress:
+            task_user.status_task = TaskGroupStatusEnum.IN_PROGRESS  
+        else:
+            task_user.status_task = TaskGroupStatusEnum.DONE
         
+        task_user.save()
+
+        return Response(
+            data={"success": "Tarefa atualizada com sucesso!"}, status=status.HTTP_200_OK
+        )
         
         

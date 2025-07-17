@@ -35,11 +35,5 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        tasks = (
-            Task.objects
-            .filter(task_user__user=instance)
-            .order_by('-id')[:3]
-        )
-        data['tasks'] = TaskSerializer(tasks, many=True).data
         data['profile_picture'] = f'http://localhost:8000/media/{instance.profile_picture}'
         return data       

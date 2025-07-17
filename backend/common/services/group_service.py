@@ -3,6 +3,7 @@ from common.types import TaskGroupData
 from common.models import Group, CustomUser, Task, TaskUser, Notification
 from common.serializers.task_serializer import TaskSerializer
 from common.enum import NotificationTypeEnum, InviteStatusEnum
+from rest_framework.request import Request
 
 class GroupService:
     
@@ -13,11 +14,13 @@ class GroupService:
         group: Optional[Group],
         task_return: Optional[Task] = None,
         user: Optional[CustomUser],
+        request: Optional[Request] = None
     ):
         self.task_group_data = task_group_data
         self.group = group
         self.task_return = task_return
         self.user = user
+        self.request = request
         
         
     def create_task_group(self):
@@ -29,7 +32,7 @@ class GroupService:
             "priority": self.task_group_data.priority,
             "created_by": self.user
         }
-        task_serializer = TaskSerializer(data=data_task)
+        task_serializer = TaskSerializer(data=data_task, context={"request": self.request})
         if task_serializer.is_valid():
             task = task_serializer.save()
             self.task_return = task

@@ -51,7 +51,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_dashboard_user(self, request):
         user = request.user
         service = UserService(
-            user=user
+            user=user,
+            request=request
         )
         data = service.return_data_dashboard()
         return Response(

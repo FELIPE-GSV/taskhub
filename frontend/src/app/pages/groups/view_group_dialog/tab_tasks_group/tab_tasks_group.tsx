@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { TabsContent } from "@/components/ui/tabs"
 import { CheckSquare, Tag } from "lucide-react"
 import { CreateGroupTaskDialog } from "./create_group_task_dialog/create_group_task_dialog"
@@ -41,7 +40,7 @@ export const TabTasksGroup = ({ isCreator, userRole, group }: TabGroupProps) => 
                     </div>
                 </div>
                 :
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                     {tasks_group?.map((task, index) => {
                         return (
                             <CardListTaskGroup

@@ -3,11 +3,12 @@ from typing import Optional
 from django.utils import timezone
 from common.serializers.task_serializer import TaskSerializer
 import random
-
+from rest_framework.request import Request
 
 class UserService:
-    def __init__(self, *, user: Optional[CustomUser]):
+    def __init__(self, *, user: Optional[CustomUser] = None, request: Optional[Request] = None):
         self.user = user
+        self.request = request
 
     def calculates_weekly_productivity(self):
         today = timezone.now()
@@ -120,7 +121,7 @@ class UserService:
 
         latest_tasks = TaskUser.objects.filter(user=self.user).order_by("-id")[:4]
         tasks_to_serialize = [task.task for task in latest_tasks]
-        serializer = TaskSerializer(tasks_to_serialize, many=True)
+        serializer = TaskSerializer(tasks_to_serialize, many=True, context={"request": self.request})
  
         weekly_progress_percent = self.calculates_weekly_productivity()
 

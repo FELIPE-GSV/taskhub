@@ -20,6 +20,12 @@ export interface TaskGroup {
     priority: number;
     daysLate: string;
     members: TaskMember[];
+    created_by: string;
+    group_id: number;
+    user_status: {
+        id: number;
+        status: string;
+    }
 }
 
 type UseListTaskGroup = {

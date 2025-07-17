@@ -55,10 +55,50 @@ class TaskGroupSerializer(serializers.ModelSerializer):
     members = serializers.SerializerMethodField()
     daysLate = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+    created_by = serializers.SerializerMethodField()
+    user_status = serializers.SerializerMethodField()
+    group_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'daysLate', 'members', 'priority', 'created_by']
+        fields = ['id', 'title', 'description', 'status', 'daysLate', 'members', 'priority', 'created_by', 'user_status', 'group_id']
+        
+    def get_group_id(self, obj):
+        group = self.context.get('group')
+
+        if group:
+            return group.id
+        
+    def get_user_status(self, obj):
+        request = self.context.get("request")
+        if not request:
+            return None
+
+        user = request.user
+        group = self.context.get("group")
+
+        task_user = TaskUser.objects.filter(task=obj, user=user, group=group).first()
+        if not task_user:
+            return {
+                "status": "Não atribuída",
+                "id": 0
+            }
+
+        status_map = {
+            1: "A fazer",
+            2: "Em andamento",
+            3: "Concluída"
+        }
+
+        return {
+            "status": status_map.get(task_user.status_task, "Desconhecido"),
+            "id": task_user.status_task
+        }
+    
+    def get_created_by(self, obj):
+        if obj.created_by:
+            return f'{obj.created_by.first_name} {obj.created_by.last_name}'
+        return None
 
     def get_members(self, obj):
         request = self.context.get("request")
@@ -95,24 +135,23 @@ class TaskGroupSerializer(serializers.ModelSerializer):
     def get_status(self, obj):
         group = self.context.get('group')
         task_users = TaskUser.objects.filter(task=obj, group=group)
-
         if not task_users.exists():
-            return "Não iniciada"
-
-        status_list = list(task_users.values_list('status_task', flat=True))
-
-        if all(status == 3 for status in status_list):
-            return {
-                "status": "Concluida",
-                "id": 3
-            }
-        elif any(status == 2 for status in status_list):
-            return {
-                "status": "Em andamento",
-                "id": 2
-            }
-        else:
             return {
                 "status": "A fazer",
                 "id": 1
             }
+        status_list = list(task_users.values_list('status_task', flat=True))
+        if all(status == 3 for status in status_list):
+            return {
+                "status": "Concluída",
+                "id": 3
+            }
+        if all(status == 1 for status in status_list):
+            return {
+                "status": "A fazer",
+                "id": 1
+            }
+        return {
+            "status": "Em andamento",
+            "id": 2
+        }

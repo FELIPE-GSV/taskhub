@@ -49,7 +49,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             
         data_return = tasks.order_by('-id')
 
-        serializer = TaskSerializer(data_return, many=True)
+        serializer = TaskSerializer(data_return, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
     
     def destroy(self, request, *args, **kwargs):

@@ -1,3 +1,4 @@
+import { ViewTaskDialog } from "@/app/pages/groups/view_group_dialog/tab_tasks_group/view_task_dialog/view_task_dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -6,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { TaskGroup } from "@/services/groups/useListTaskGroups"
 import { useToggleTaskGroup } from "@/services/groups/useToggleTaskGroup"
 import { getPriorityColor, getStatusColor, getStatusIcon } from "@/utils/utils"
-import { BadgeCheck, Calendar, CirclePlay, Edit, MoreHorizontal, Trash2 } from "lucide-react"
+import { BadgeCheck, Calendar, CirclePlay, Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 
 type UseCardListTaskGroupProps = {
     task: TaskGroup
@@ -57,7 +58,7 @@ export function CardListTaskGroup({ task, isCreator, userRole }: UseCardListTask
                         {task.user_status.id === 1 ? (
                             <DropdownMenuItem
                                 className="text-blue-600"
-                                onClick={() => toggleTaskGroup({ id_group: task.group_id, task_id: task.id, is_in_progress: true })}
+                                onClick={() => toggleTaskGroup({ id_group: task?.group?.id, task_id: task.id, is_in_progress: true })}
                             >
                                 <CirclePlay className="mr-2 h-4 w-4 text-blue-600" />
                                 Iniciar tarefa
@@ -65,12 +66,15 @@ export function CardListTaskGroup({ task, isCreator, userRole }: UseCardListTask
                         ) : task.user_status.id === 2 ? (
                             <DropdownMenuItem
                                 className="text-green-600"
-                                onClick={() => toggleTaskGroup({ id_group: task.group_id, task_id: task.id, is_in_progress: false })}
+                                onClick={() => toggleTaskGroup({ id_group: task?.group?.id, task_id: task.id, is_in_progress: false })}
                             >
                                 <BadgeCheck className="mr-2 h-4 w-4 text-green-600" />
                                 Finalizar tarefa
                             </DropdownMenuItem>
                         ) : null}
+                        <ViewTaskDialog
+                            task={task}
+                        />
                         {userRole === 1 && isCreator && (
                             <>
                                 <DropdownMenuItem>
@@ -106,7 +110,7 @@ export function CardListTaskGroup({ task, isCreator, userRole }: UseCardListTask
                     </span>
                 </div>
                 <span className="text-xs text-slate-500 dark:text-slate-400">
-                    Criada por {task?.created_by}
+                    Criada por {task?.created_by?.name}
                 </span>
             </div>
         </div>

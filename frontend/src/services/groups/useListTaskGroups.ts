@@ -5,7 +5,7 @@ export interface TaskMember {
     id: number;
     name: string;
     email: string;
-    complete: boolean;
+    status_task: number;
     avatar: string ;
 }
 
@@ -20,12 +20,21 @@ export interface TaskGroup {
     priority: number;
     daysLate: string;
     members: TaskMember[];
-    created_by: string;
-    group_id: number;
+    created_by: {
+        name: string,
+        avatar: string
+    };
+    group: {
+        id: number;
+        name: string;
+    };
     user_status: {
         id: number;
         status: string;
     }
+    created_at: string;
+    is_late: boolean;
+    expiration_date: string
 }
 
 type UseListTaskGroup = {

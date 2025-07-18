@@ -10,9 +10,7 @@ export const useToggleTaskGroup = () => {
             task_id: number,
             is_in_progress: boolean
         }) => {
-            const { data } = await API.patch(`/groups/${payload.id_group}/toggle-task-group/`, {
-                task_id: payload.task_id,
-            }, {
+            const { data } = await API.patch(`/groups/${payload.id_group}/toggle-task-group/`, { task_id: payload.task_id, }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
@@ -26,6 +24,7 @@ export const useToggleTaskGroup = () => {
         onSuccess: (data) => {
             if (data) {
                 queryClient.invalidateQueries({ queryKey: ['tasks_group'] })
+                ToastService(TypeToast.SUCCESS, "Tarefa atualizada com sucesso!")
             }
         },
         onError: (error) => {

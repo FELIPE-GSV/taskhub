@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Users } from "lucide-react";
-import { CardGroups } from "./ cards_groups/cards_groups";
+import { CardGroups } from "./cards_groups/cards_groups";
 import { FiltersGroups } from "./filters_groups/filters_groups";
 import { GroupsComponent } from "./groups_component/groups_component";
 import { useListGroups } from "@/services/groups/useListGroups";

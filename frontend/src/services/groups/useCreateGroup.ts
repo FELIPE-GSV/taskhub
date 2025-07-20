@@ -2,7 +2,7 @@ import API from "@/api/api"
 import { ToastService, TypeToast } from "@/components/toast_service/toast_service"
 import { queryClient } from "@/lib/queryClient"
 import { useMutation } from "@tanstack/react-query"
-import { Group } from "./useListGroups"
+import { Group } from "./tasks/useListGroups"
 
 type UseCreateGroupProps = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>

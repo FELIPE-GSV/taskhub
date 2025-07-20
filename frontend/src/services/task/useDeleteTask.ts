@@ -21,7 +21,7 @@ export const useDeleteTask = () => {
       if (data) {
         ToastService(TypeToast.SUCCESS, "Tarefa excluida com sucesso!")
         queryClient.invalidateQueries({ queryKey: ['tasks'] })
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+        queryClient.refetchQueries({ queryKey: ['dashboard'] })
       }
     },
 

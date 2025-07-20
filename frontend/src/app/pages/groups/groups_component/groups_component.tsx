@@ -1,6 +1,6 @@
 import { CardListGroup } from "@/components/cards/card_list_group/card_list_group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { Users } from "lucide-react";
 
 type GroupsComponentProps = {

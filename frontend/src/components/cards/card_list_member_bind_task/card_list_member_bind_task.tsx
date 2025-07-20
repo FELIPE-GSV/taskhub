@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
-import { GroupMember } from "@/services/groups/useListGroups"
+import { GroupMember } from "@/services/groups/tasks/useListGroups"
 
 type CardListMemberBindTaskProps = {
     member: GroupMember

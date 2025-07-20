@@ -1,4 +1,4 @@
-import { Group } from "@/services/groups/useListGroups"
+import { Group } from "@/services/groups/tasks/useListGroups"
 import { Crown, LogOut, MoreHorizontal, Shield, Trash2, User, Users } from "lucide-react"
 import { Badge } from "../../ui/badge"
 import { getPrivacyGroupColor, getRoleGroupColor } from "@/utils/utils"

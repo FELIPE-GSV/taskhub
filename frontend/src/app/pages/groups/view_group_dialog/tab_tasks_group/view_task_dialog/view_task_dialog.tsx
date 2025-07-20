@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { TaskGroup } from "@/services/groups/useListTaskGroups";
+import { TaskGroup } from "@/services/groups/tasks/useListTaskGroups";
 import { getPriorityConfig, getStatusColor, getStatusConfig, getStatusIcon } from "@/utils/utils";
 import { AlertCircle, Building, Calendar, Eye, FileText, Target, User, Users } from "lucide-react";
 import { CardListMember } from "./card_list_member_task/card_list_member";

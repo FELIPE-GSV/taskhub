@@ -4,7 +4,7 @@ import { Users } from "lucide-react";
 import { CardGroups } from "./cards_groups/cards_groups";
 import { FiltersGroups } from "./filters_groups/filters_groups";
 import { GroupsComponent } from "./groups_component/groups_component";
-import { useListGroups } from "@/services/groups/useListGroups";
+import { useListGroups } from "@/services/groups/tasks/useListGroups";
 import { FormGroup } from "./form_group/form_group";
 import { useState } from "react";
 

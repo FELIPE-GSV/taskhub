@@ -1,8 +1,8 @@
 import { TabsContent } from "@/components/ui/tabs"
 import { CheckSquare, Tag } from "lucide-react"
 import { CreateGroupTaskDialog } from "./create_group_task_dialog/create_group_task_dialog"
-import { Group } from "@/services/groups/useListGroups"
-import { useListTaskGroup } from "@/services/groups/useListTaskGroups"
+import { Group } from "@/services/groups/tasks/useListGroups"
+import { useListTaskGroup } from "@/services/groups/tasks/useListTaskGroups"
 import { CardListTaskGroup } from "@/components/cards/card_list_task_group/card_list_task_group"
 
 export type TabGroupProps = {

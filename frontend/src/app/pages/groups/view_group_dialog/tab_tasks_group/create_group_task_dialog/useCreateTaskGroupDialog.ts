@@ -1,5 +1,5 @@
 import { useCreateTaskGroup } from "@/services/groups/useCreateTaskGroup";
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react"
 import { useForm } from "react-hook-form";

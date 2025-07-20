@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/userContext";
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { CalendarDays, CheckSquare, Crown, Eye, Shield, User, Users } from "lucide-react";
 import { useState } from "react";
 import { TabTasksGroup } from "./tab_tasks_group/tab_tasks_group";

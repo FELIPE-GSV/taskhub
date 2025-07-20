@@ -1,7 +1,7 @@
 "use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/contexts/userContext";
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { Crown, Shield, Users } from "lucide-react";
 type CardGroupsProps = {
     groups: Group[] | undefined | null

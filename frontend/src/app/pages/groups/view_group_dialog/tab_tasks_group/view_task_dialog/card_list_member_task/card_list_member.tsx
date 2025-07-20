@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import { TaskMember } from "@/services/groups/useListTaskGroups"
+import { TaskMember } from "@/services/groups/tasks/useListTaskGroups"
 import { CheckCircle2, Clock } from "lucide-react"
 
 type CardListMemberProps = {

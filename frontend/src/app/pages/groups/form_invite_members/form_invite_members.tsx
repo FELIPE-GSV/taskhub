@@ -4,7 +4,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Mail, Send, UserPlus } from "lucide-react";
 import { useFormInviteMembers } from "./useFormInviteMembers";

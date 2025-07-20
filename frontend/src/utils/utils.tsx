@@ -1,4 +1,4 @@
-import { Group } from "@/services/groups/useListGroups";
+import { Group } from "@/services/groups/tasks/useListGroups";
 import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import type { JSX } from "react";
 

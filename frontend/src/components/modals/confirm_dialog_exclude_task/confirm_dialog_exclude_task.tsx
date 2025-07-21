@@ -10,15 +10,18 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { useDeleteTaskGroup } from "@/services/groups/tasks/useDeleteTaskGroup"
 import { useDeleteTask } from "@/services/task/useDeleteTask"
 import { Trash2 } from "lucide-react"
 
-interface ConfirmDialogExcludeTaskProps {
-    idTask?: number
+type ConfirmDialogExcludeTaskProps = {
+    idTask?: number,
+    groupId?: number
 }
-export function ConfirmDialogExcludeTask({ idTask }: ConfirmDialogExcludeTaskProps) {
+export function ConfirmDialogExcludeTask({ idTask, groupId }: ConfirmDialogExcludeTaskProps) {
 
-    const { mutate: deleteTask } = useDeleteTask()
+    const { mutateAsync: deleteTask } = useDeleteTask()
+    const { mutateAsync: deleteTaskGroup } = useDeleteTaskGroup()
 
     return (
         <AlertDialog>
@@ -27,7 +30,7 @@ export function ConfirmDialogExcludeTask({ idTask }: ConfirmDialogExcludeTaskPro
                     className="text-red-600 dark:text-red-400"
                     onSelect={(e) => e.preventDefault()}
                 >
-                    <Trash2 className="mr-2 h-4 w-4" />
+                    <Trash2 className="mr-2 h-4 w-4 text-red-600" />
                     Excluir
                 </DropdownMenuItem>
             </AlertDialogTrigger>
@@ -44,7 +47,13 @@ export function ConfirmDialogExcludeTask({ idTask }: ConfirmDialogExcludeTaskPro
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={() => deleteTask(idTask)}
+                        onClick={() => {
+                            if (groupId) {
+                                deleteTaskGroup({ id_group: groupId, id_task: idTask })
+                            } else {
+                                deleteTask(idTask)
+                            }
+                        }}
                         className="bg-white text-red-600 dark:text-red-400 border-1"
                     >
                         Excluir

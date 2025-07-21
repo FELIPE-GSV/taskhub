@@ -10,15 +10,15 @@ class GroupService:
     def __init__(
         self,
         *,
-        task_group_data: Optional[TaskGroupData],
-        group: Optional[Group],
-        task_return: Optional[Task] = None,
-        user: Optional[CustomUser],
+        task_group_data: Optional[TaskGroupData] = None,
+        group: Optional[Group] = None,
+        task: Optional[Task] = None,
+        user: Optional[CustomUser] = None,
         request: Optional[Request] = None
     ):
         self.task_group_data = task_group_data
         self.group = group
-        self.task_return = task_return
+        self.task = task
         self.user = user
         self.request = request
         
@@ -35,7 +35,7 @@ class GroupService:
         task_serializer = TaskSerializer(data=data_task, context={"request": self.request})
         if task_serializer.is_valid():
             task = task_serializer.save()
-            self.task_return = task
+            self.task = task
             for user in self.task_group_data.assignedTo:
                 user_instance = CustomUser.objects.filter(id=user).first()
                 TaskUser.objects.create(task=task, user=user_instance, group=self.group)
@@ -59,5 +59,12 @@ class GroupService:
     def init_task_group(self):
         self.create_task_group()
         self.create_notifications_user()
+        
+        
+    def delete_task_group(self):
+        for tu in TaskUser.objects.filter(task=self.task, group=self.group):
+            tu.delete()    
+        self.task.delete()
+        
         
     

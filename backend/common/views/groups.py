@@ -244,4 +244,28 @@ class GroupViewSet(viewsets.ModelViewSet):
             data={"success": "Tarefa atualizada com sucesso!"}, status=status.HTTP_200_OK
         )
         
-        
+    @action(
+        detail=True,
+        methods=["DELETE"],
+        url_path="delete-task-group",
+        url_name="delete_task_group",
+    )
+    def delete_task_group(self, request, pk=None):
+        group = self.get_object()
+        group_member = GroupMember.objects.filter(group=group, user=request.user).first()
+        if int(group_member.role) != RoleMemberGroupEnum.ADMIN.value:
+            return Response(
+                data={"detail": "Apenas o administrador pode deletar tarefas."}, status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        task = request.query_params.get("task_id")
+        service = GroupService(
+            group=group,
+            task=Task.objects.filter(id=task).first(),
+            user=request.user,
+            request=request
+        )
+        service.delete_task_group()
+        return Response(
+            data={"success": "Tarefa deletada com sucesso!"}, status=status.HTTP_200_OK
+        )

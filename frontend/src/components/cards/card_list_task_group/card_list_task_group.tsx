@@ -1,4 +1,5 @@
 import { ViewTaskDialog } from "@/app/pages/groups/view_group_dialog/tab_tasks_group/view_task_dialog/view_task_dialog"
+import { ConfirmDialogExcludeTask } from "@/components/modals/confirm_dialog_exclude_task/confirm_dialog_exclude_task"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -81,10 +82,10 @@ export function CardListTaskGroup({ task, isCreator, userRole }: UseCardListTask
                                     <Edit className="mr-2 h-4 w-4" />
                                     Editar
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="text-red-600 dark:text-red-400">
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Excluir
-                                </DropdownMenuItem>
+                                <ConfirmDialogExcludeTask
+                                    groupId={task?.group?.id}
+                                    idTask={task.id}
+                                />
                             </>
                         )}
                     </DropdownMenuContent>

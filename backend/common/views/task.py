@@ -17,7 +17,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         data = request.data
-        serializer = TaskSerializer(data=data)
+        serializer = TaskSerializer(data=data, context={"request": self.request})
         if serializer.is_valid():
             task = serializer.save(created_by=request.user, updated_by=request.user)
             user = request.user

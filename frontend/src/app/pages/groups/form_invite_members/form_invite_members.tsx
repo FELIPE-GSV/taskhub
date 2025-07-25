@@ -13,9 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 
 type FormInviteMembersProps = {
     group: Group
+    isGroup?: boolean
 }
 
-export function FormInviteMembers({ group }: FormInviteMembersProps) {
+export function FormInviteMembers({ group, isGroup }: FormInviteMembersProps) {
 
     const {
         handleInviteByEmail,
@@ -124,7 +125,7 @@ export function FormInviteMembers({ group }: FormInviteMembersProps) {
                         <Button
                             type="button"
                             variant="outline"
-                            onClick={()=> handleOpenChange(false)}
+                            onClick={() => handleOpenChange(false)}
                             className="w-full sm:w-auto"
                         >
                             Cancelar

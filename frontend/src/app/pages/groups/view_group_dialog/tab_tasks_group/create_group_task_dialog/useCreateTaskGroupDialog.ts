@@ -1,4 +1,4 @@
-import { useCreateTaskGroup } from "@/services/groups/useCreateTaskGroup";
+import { useCreateTaskGroup } from "@/services/groups/tasks/useCreateTaskGroup";
 import { Group } from "@/services/groups/tasks/useListGroups";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react"

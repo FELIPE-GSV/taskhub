@@ -8,7 +8,6 @@ from common.enum import (
     PrivacyGroupEnum,
     RoleMemberGroupEnum,
     InviteStatusEnum,
-    TaskGroupStatusEnum,
 )
 from common.mixin import TrackableMixin
 

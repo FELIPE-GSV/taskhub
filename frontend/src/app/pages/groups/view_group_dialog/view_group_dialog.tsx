@@ -7,6 +7,7 @@ import { Group } from "@/services/groups/tasks/useListGroups";
 import { CalendarDays, CheckSquare, Crown, Eye, Shield, User, Users } from "lucide-react";
 import { useState } from "react";
 import { TabTasksGroup } from "./tab_tasks_group/tab_tasks_group";
+import { TabUsersGroup } from "./tab_users_group/tab_users_group";
 
 type ViewGroupDialogProps = {
     group: Group
@@ -91,6 +92,13 @@ export function ViewGroupDialog({ group }: ViewGroupDialogProps) {
                         </TabsList>
                         <div className="flex-1 overflow-y-auto mt-4">
                             <TabTasksGroup
+                                isCreator={isCreator}
+                                userRole={userRole}
+                                group={group}
+                            />
+                        </div>
+                        <div className="flex-1 overflow-y-auto mt-4">
+                            <TabUsersGroup
                                 isCreator={isCreator}
                                 userRole={userRole}
                                 group={group}

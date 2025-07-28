@@ -76,7 +76,7 @@ export default function RootLayout({
               </div>
             </main>
           </UserProvider>
-          <Toaster position="top-right" />
+          <Toaster position="top-right" duration={2000}/>
         </QueryClientProvider>
       </body>
     </html>

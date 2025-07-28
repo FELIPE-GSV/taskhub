@@ -102,47 +102,9 @@ export function CreateGroupTaskDialog({ group }: CreateGroupTaskDialog) {
                             </p>
                         )}
                     </div>
-                    <div className="space-y-2">
-                        <Label className="text-slate-700 dark:text-slate-200 font-medium flex items-center">
-                            <CalendarIcon className="w-4 h-4 mr-2 text-slate-500" />
-                            Data de Vencimento
-                        </Label>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    className={cn(
-                                        "w-full justify-start text-left font-normal border-2 hover:border-blue-500 transition-colors",
-                                        !form.watch('expiration_date') && "text-muted-foreground"
-                                    )}
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {form.watch('expiration_date') ? (
-                                        format(form.watch('expiration_date'), "PPP", { locale: ptBR })
-                                    ) : (
-                                        <span>Selecione uma data</span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar
-                                    mode="single"
-                                    selected={form.watch('expiration_date')}
-                                    onSelect={(date) => form.setValue('expiration_date', date!)}
-                                    disabled={(date) => date < new Date()}
-                                    initialFocus
-                                    locale={ptBR}
-                                />
-                            </PopoverContent>
-                        </Popover>
-                        {form.formState.errors.expiration_date && (
-                            <p className="text-sm text-red-600 dark:text-red-400">
-                                {form.formState.errors.expiration_date.message}
-                            </p>
-                        )}
-                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <Label className="text-slate-700 dark:text-slate-200 font-medium flex items-center">
                                 <Clock className="w-4 h-4 mr-2 text-slate-500" />
                                 Status
@@ -174,7 +136,7 @@ export function CreateGroupTaskDialog({ group }: CreateGroupTaskDialog) {
                                     {form.formState.errors.status.message}
                                 </p>
                             )}
-                        </div>
+                        </div> */}
                         <div className="space-y-2">
                             <Label className=" text-slate-700 dark:text-slate-200 font-medium flex items-center">
                                 <AlertTriangle className="w-4 h-4 mr-2 text-slate-500" />
@@ -205,6 +167,45 @@ export function CreateGroupTaskDialog({ group }: CreateGroupTaskDialog) {
                             {form.formState.errors.priority && (
                                 <p className="text-sm text-red-600 dark:text-red-400">
                                     {form.formState.errors.priority.message}
+                                </p>
+                            )}
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-slate-700 dark:text-slate-200 font-medium flex items-center">
+                                <CalendarIcon className="w-4 h-4 mr-2 text-slate-500" />
+                                Data de Vencimento
+                            </Label>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className={cn(
+                                            "w-full justify-start text-left font-normal border-2 hover:border-blue-500 transition-colors",
+                                            !form.watch('expiration_date') && "text-muted-foreground"
+                                        )}
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {form.watch('expiration_date') ? (
+                                            format(form.watch('expiration_date'), "PPP", { locale: ptBR })
+                                        ) : (
+                                            <span>Selecione uma data</span>
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={form.watch('expiration_date')}
+                                        onSelect={(date) => form.setValue('expiration_date', date!)}
+                                        disabled={(date) => date < new Date()}
+                                        initialFocus
+                                        locale={ptBR}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            {form.formState.errors.expiration_date && (
+                                <p className="text-sm text-red-600 dark:text-red-400">
+                                    {form.formState.errors.expiration_date.message}
                                 </p>
                             )}
                         </div>

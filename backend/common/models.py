@@ -8,6 +8,7 @@ from common.enum import (
     PrivacyGroupEnum,
     RoleMemberGroupEnum,
     InviteStatusEnum,
+    TaskGroupStatusEnum
 )
 from common.mixin import TrackableMixin
 
@@ -74,7 +75,7 @@ class TaskUser(TrackableMixin):
         null=True,
         blank=True,
     )
-    status_task = models.IntegerField(choices=NotificationTypeEnum.choices, default=1, null=True, blank=True)
+    status_task = models.IntegerField(choices=TaskGroupStatusEnum.choices, default=1, null=True, blank=True)
 
 
 class GroupMember(models.Model):

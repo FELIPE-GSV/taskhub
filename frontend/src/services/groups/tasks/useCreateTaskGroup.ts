@@ -25,7 +25,8 @@ export const useCreateTaskGroup = ({ setIsOpen }: UseCreateTaskGroup) => {
         },
         onSuccess: (data) => {
             if (data) {
-                queryClient.refetchQueries({ queryKey: ['tasks_group'] })
+                queryClient.invalidateQueries({ queryKey: ['tasks_group'] })
+                queryClient.invalidateQueries({ queryKey: ['members_group'] })
                 ToastService(TypeToast.SUCCESS, "Tarefa criada com sucesso!")
                 setIsOpen(false)
             }

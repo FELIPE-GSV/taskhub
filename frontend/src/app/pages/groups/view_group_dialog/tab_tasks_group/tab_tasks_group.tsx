@@ -14,11 +14,13 @@ export const TabTasksGroup = ({ isCreator, userRole, group }: TabGroupProps) => 
 
     const { data: tasks_group } = useListTaskGroup({ id_group: group.id })
 
+    console.log("olha olha",userRole === 1, isCreator)
+
     return (
         <TabsContent value="tasks" className="space-y-4 m-0">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Tarefas do Grupo</h3>
-                {userRole === 1 && isCreator && (
+                {(userRole === 1 || isCreator) && (
                     <CreateGroupTaskDialog group={group} />
                 )}
             </div>

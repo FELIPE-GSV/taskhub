@@ -76,7 +76,7 @@ export function CardListTaskGroup({ task, isCreator, userRole }: UseCardListTask
                         <ViewTaskDialog
                             task={task}
                         />
-                        {userRole === 1 && isCreator && (
+                        {(userRole === 1 || isCreator) && (
                             <>
                                 <DropdownMenuItem>
                                     <Edit className="mr-2 h-4 w-4" />

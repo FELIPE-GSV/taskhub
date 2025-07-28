@@ -2,7 +2,8 @@
 from rest_framework import serializers
 from common.models import (
     CustomUser,
-    Task
+    TaskUser,
+    GroupMember
 )
 
 from common.serializers.task_serializer import TaskSerializer
@@ -36,4 +37,54 @@ class RegisterSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['profile_picture'] = f'http://localhost:8000/media/{instance.profile_picture}'
-        return data       
+        return data
+    
+    
+class UserMemberGroupSerializer(serializers.ModelSerializer):
+    
+    avatar = serializers.SerializerMethodField()
+    total_tasks = serializers.SerializerMethodField()
+    completed_tasks = serializers.SerializerMethodField()
+    role = serializers.SerializerMethodField()
+    is_creator = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = CustomUser
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'avatar',
+            'email',
+            'total_tasks',
+            'completed_tasks',
+            'role',
+            'is_creator'
+        ]
+        
+    def get_is_creator(self, obj):
+        group = self.context.get("group")
+        if group.created_by.id == obj.id:
+            return True
+        return False
+        
+    def get_total_tasks(self, obj):
+        group = self.context.get("group")
+        return TaskUser.objects.filter(user=obj, group=group).count()
+    
+    def get_role(self, obj):
+        group = self.context.get("group")
+        return GroupMember.objects.filter(user=obj, group=group).first().role
+    
+    def get_completed_tasks(self, obj):
+        group = self.context.get("group")
+        return TaskUser.objects.filter(user=obj, group=group, status_task=3).count()
+        
+    def get_avatar(self, obj):
+        request = self.context.get("request")
+        return (
+            request.build_absolute_uri(obj.profile_picture.url)
+            if obj.profile_picture and request
+            else None
+        )
+    

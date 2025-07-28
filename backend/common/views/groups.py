@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from common.models import Group, GroupMember, CustomUser, Notification, Task, TaskUser
 from common.serializers.group_serializer import GroupSerializer, TaskGroupSerializer
+from common.serializers.user_serializer import UserMemberGroupSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from common.enum import RoleMemberGroupEnum, NotificationTypeEnum, InviteStatusEnum, TaskGroupStatusEnum
@@ -269,3 +270,60 @@ class GroupViewSet(viewsets.ModelViewSet):
         return Response(
             data={"success": "Tarefa deletada com sucesso!"}, status=status.HTTP_200_OK
         )
+        
+    @action(
+        detail=True,
+        methods=["GET"],
+        url_path="get-users-group",
+        url_name="get_users_group",
+    )
+    def get_users_group(self, request, pk=None):
+        group = self.get_object()
+        group_members = GroupMember.objects.filter(group=group)
+        members_instances = None
+        
+        for member in group_members:
+            if members_instances is None:
+                members_instances = [member.user]
+            else:
+                members_instances.append(member.user)
+        serializer = UserMemberGroupSerializer(members_instances, many=True, context={"request": request, "group": group})
+        return Response(serializer.data)
+    
+    @action(
+        detail=True,
+        methods=["PATCH"],
+        url_path="change-role-member",
+        url_name="change_role_member",
+    )
+    def change_role_group(self, request, pk=None):
+        group = self.get_object()
+        data = request.data
+        group_member = GroupMember.objects.filter(group=group, user=data["id_user"]).first()
+        print(group_member.role)
+        if int(group_member.role) == RoleMemberGroupEnum.ADMIN.value:
+            group_member.role = RoleMemberGroupEnum.MEMBER.value
+        else:
+            group_member.role = RoleMemberGroupEnum.ADMIN.value
+        
+        group_member.save()
+
+        return Response(
+            data={"success": "Cargo alterado com sucesso!"}, status=status.HTTP_200_OK
+        )
+    
+    @action(
+        detail=True,
+        methods=["DELETE"],
+        url_path="remove-user-group",
+        url_name="remover_user_group",
+    )
+    def remove_user_group(self, request, pk=None):
+        group = self.get_object()
+        id_user = request.query_params.get("id_user")
+        group_member = GroupMember.objects.filter(group=group, user=int(id_user)).first()
+        group_member.delete()
+        return Response(
+            data={"success": "Usuário removido com sucesso!"}, status=status.HTTP_200_OK
+        )
+        

@@ -32,13 +32,20 @@ export function FormInviteMembers({ group, isGroup }: FormInviteMembersProps) {
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogTrigger>
-                <DropdownMenuItem
-                    onSelect={(e) => e.preventDefault()}
-                >
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    Convidar Membros
-                </DropdownMenuItem>
+            <DialogTrigger asChild>
+                {isGroup ?
+                    <Button size="sm" variant="outline">
+                        <UserPlus className="w-4 h-4 mr-2" />
+                        Convidar Membro
+                    </Button>
+                    :
+                    <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                    >
+                        <UserPlus className="mr-2 h-4 w-4" />
+                        Convidar Membros
+                    </DropdownMenuItem>
+                }
             </DialogTrigger>
             <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
